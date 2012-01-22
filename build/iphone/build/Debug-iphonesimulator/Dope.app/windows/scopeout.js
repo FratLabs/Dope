@@ -1,1 +1,0 @@
-/Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/scopeout.js
