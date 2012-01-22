@@ -1,0 +1,1 @@
+/Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/wizard1.js

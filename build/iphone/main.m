@@ -13,8 +13,8 @@ NSString * const TI_APPLICATION_PUBLISHER = @"dark";
 NSString * const TI_APPLICATION_URL = @"http://";
 NSString * const TI_APPLICATION_NAME = @"Dope";
 NSString * const TI_APPLICATION_VERSION = @"1.0";
-NSString * const TI_APPLICATION_DESCRIPTION = @"not specified";
-NSString * const TI_APPLICATION_COPYRIGHT = @"2012 by dark";
+NSString * const TI_APPLICATION_DESCRIPTION = @" 111";
+NSString * const TI_APPLICATION_COPYRIGHT = @"alex.strelets";
 NSString * const TI_APPLICATION_GUID = @"b74443de-a01c-42b4-b942-6c85a0a11c13";
 BOOL const TI_APPLICATION_ANALYTICS = true;
 

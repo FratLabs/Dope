@@ -5,7 +5,7 @@ reporting an issue to help us understand your environment, build settings
 and aid in debugging. Please attach this log to any issue that you report.
 ================================================================================
 
-Starting build at 01/17/12 17:13
+Starting build at 01/23/12 00:47
 
 Build details:
 
@@ -24,7 +24,7 @@ Script arguments:
    Dope
    iphone
    iphone
-   192.168.1.104:61253
+   192.168.1.104:52188
 
 Building from: /Library/Application Support/Titanium/mobilesdk/osx/1.8.0.1/iphone
 Platform: Darwin Kernel Version 10.8.0: Tue Jun  7 16:33:36 PDT 2011; root:xnu-1504.15.3~1/RELEASE_I386
@@ -85,7 +85,7 @@ Starting Xcode compile with the following arguments:
     -configuration
     Debug
     -sdk
-    iphonesimulator4.2
+    iphonesimulator5.0
     GCC_PREPROCESSOR_DEFINITIONS=__LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1 
     IPHONEOS_DEPLOYMENT_TARGET=4.0
     TARGETED_DEVICE_FAMILY=1
@@ -94,15 +94,14 @@ app_id = com.strelets.dope
 
 
 Build settings from command line:
-    GCC_PREPROCESSOR_DEFINITIONS = __LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1
+    GCC_PREPROCESSOR_DEFINITIONS = __LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1 
     IPHONEOS_DEPLOYMENT_TARGET = 4.0
-    PLATFORM_NAME = iphonesimulator
-    SDKROOT = /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk
+    SDKROOT = iphonesimulator5.0
     TARGETED_DEVICE_FAMILY = 1
-
 
 === BUILD NATIVE TARGET Dope OF PROJECT Dope WITH CONFIGURATION Debug ===
 Check dependencies
+
 ProcessInfoPlistFile build/Debug-iphonesimulator/Dope.app/Info.plist Info.plist
     cd "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -124,10 +123,11 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv ARCHS i386
     setenv ARCHS_STANDARD_32_BIT i386
     setenv ARCHS_UNIVERSAL_IPHONE_OS i386
+    setenv AVAILABLE_PLATFORMS "iphonesimulator macosx iphoneos"
     setenv BUILD_COMPONENTS "headers build"
     setenv BUILD_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
     setenv BUILD_ROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
-    setenv BUILD_STYLE Debug
+    setenv BUILD_STYLE 
     setenv BUILD_VARIANTS normal
     setenv BUILT_PRODUCTS_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator"
     setenv CACHE_ROOT /var/folders/-B/-BaPnm+XGW8DJjz1cXvjF++++TI/-Caches-/com.apple.Xcode.501
@@ -155,6 +155,7 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv DEAD_CODE_STRIPPING NO
     setenv DEBUGGING_SYMBOLS YES
     setenv DEBUG_INFORMATION_FORMAT dwarf-with-dsym
+    setenv DEFAULT_COMPILER com.apple.compilers.llvm.clang.1_0
     setenv DEPLOYMENT_LOCATION NO
     setenv DEPLOYMENT_POSTPROCESSING NO
     setenv DERIVED_FILES_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/DerivedSources"
@@ -174,12 +175,13 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv DO_HEADER_SCANNING_IN_JAM NO
     setenv DSTROOT /tmp/Dope.dst
     setenv DWARF_DSYM_FILE_NAME Dope.app.dSYM
+    setenv DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT NO
     setenv DWARF_DSYM_FOLDER_PATH "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator"
     setenv EFFECTIVE_PLATFORM_NAME -iphonesimulator
     setenv ENABLE_HEADER_DEPENDENCIES YES
     setenv ENABLE_OPENMP_SUPPORT NO
-    setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS ".svn .git CVS"
-    setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES "*.nib *.lproj *.framework *.gch (*) CVS .svn .git *.xcodeproj *.xcode *.pbproj *.pbxproj"
+    setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS ".DS_Store .svn .git .hg CVS"
+    setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES "*.nib *.lproj *.framework *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj"
     setenv EXECUTABLES_FOLDER_PATH Dope.app/Executables
     setenv EXECUTABLE_FOLDER_PATH Dope.app
     setenv EXECUTABLE_NAME Dope
@@ -201,10 +203,10 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv GCC_PFE_FILE_C_DIALECTS "c objective-c c++ objective-c++"
     setenv GCC_PRECOMPILE_PREFIX_HEADER YES
     setenv GCC_PREFIX_HEADER Dope_Prefix.pch
-    setenv GCC_PREPROCESSOR_DEFINITIONS "__LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1"
+    setenv GCC_PREPROCESSOR_DEFINITIONS "__LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1 "
     setenv GCC_SYMBOLS_PRIVATE_EXTERN YES
     setenv GCC_TREAT_WARNINGS_AS_ERRORS NO
-    setenv GCC_VERSION 4.2
+    setenv GCC_VERSION com.apple.compilers.llvm.clang.1_0
     setenv GCC_WARN_ABOUT_RETURN_TYPE NO
     setenv GCC_WARN_MISSING_PARENTHESES NO
     setenv GCC_WARN_SHADOW NO
@@ -222,7 +224,7 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES YES
     setenv HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS YES
     setenv HEADERMAP_INCLUDES_PROJECT_HEADERS YES
-    setenv HEADER_SEARCH_PATHS "\"/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/include\" /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 headers"
+    setenv HEADER_SEARCH_PATHS "\"/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/include\" /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.0.sdk/usr/include/libxml2 headers"
     setenv ICONV /usr/bin/iconv
     setenv INFOPLIST_EXPAND_BUILD_SETTINGS YES
     setenv INFOPLIST_FILE Info.plist
@@ -230,11 +232,11 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv INFOPLIST_PATH Dope.app/Info.plist
     setenv INFOPLIST_PREPROCESS NO
     setenv INFOSTRINGS_PATH Dope.app/English.lproj/InfoPlist.strings
-    setenv INSTALL_DIR /tmp/Dope.dst/Users/dark/Applications
+    setenv INSTALL_DIR /tmp/Dope.dst/Applications
     setenv INSTALL_GROUP staff
     setenv INSTALL_MODE_FLAG u+w,go-w,a+rX
     setenv INSTALL_OWNER dark
-    setenv INSTALL_PATH /Users/dark/Applications
+    setenv INSTALL_PATH /Applications
     setenv INSTALL_ROOT /tmp/Dope.dst
     setenv IPHONEOS_DEPLOYMENT_TARGET 4.0
     setenv JAVAC_DEFAULT_FLAGS "-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"
@@ -252,7 +254,9 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv KEEP_PRIVATE_EXTERNS NO
     setenv LD_GENERATE_MAP_FILE NO
     setenv LD_MAP_FILE_PATH "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/Dope-LinkMap-normal-i386.txt"
+    setenv LD_NO_PIE NO
     setenv LD_OPENMP_FLAGS -fopenmp
+    setenv LEGACY_DEVELOPER_DIR /Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
     setenv LEX /Developer/usr/bin/lex
     setenv LIBRARY_FLAG_NOSPACE YES
     setenv LIBRARY_FLAG_PREFIX -l
@@ -267,6 +271,7 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv LOCAL_LIBRARY_DIR /Library
     setenv MACH_O_TYPE mh_execute
     setenv MACOSX_DEPLOYMENT_TARGET 10.6
+    setenv MAC_OS_X_PRODUCT_BUILD_VERSION 10K549
     setenv MAC_OS_X_VERSION_ACTUAL 1068
     setenv MAC_OS_X_VERSION_MAJOR 1060
     setenv MAC_OS_X_VERSION_MINOR 0608
@@ -296,17 +301,17 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv PKGINFO_PATH Dope.app/PkgInfo
     setenv PLATFORM_DEVELOPER_APPLICATIONS_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/Applications
     setenv PLATFORM_DEVELOPER_BIN_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin
-    setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/Library
+    setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library
     setenv PLATFORM_DEVELOPER_SDK_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs
     setenv PLATFORM_DEVELOPER_TOOLS_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/Tools
     setenv PLATFORM_DEVELOPER_USR_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/usr
     setenv PLATFORM_DIR /Developer/Platforms/iPhoneSimulator.platform
     setenv PLATFORM_NAME iphonesimulator
-    setenv PLATFORM_PRODUCT_BUILD_VERSION 8C134
-    setenv PLATFORM_VERSION_AVAILABILITY_H_FORMAT 40200
+    setenv PLATFORM_PREFERRED_ARCH i386
+    setenv PLATFORM_PRODUCT_BUILD_VERSION 9A334
+    setenv PLATFORM_VERSION_AVAILABILITY_H_FORMAT 50000
     setenv PLIST_FILE_OUTPUT_FORMAT binary
     setenv PLUGINS_FOLDER_PATH Dope.app/PlugIns
-    setenv PREBINDING YES
     setenv PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR YES
     setenv PRECOMP_DESTINATION_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/PrefixHeaders"
     setenv PRESERVE_DEAD_CODE_INITS_AND_TERMS NO
@@ -325,6 +330,7 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS YES
     setenv REMOVE_CVS_FROM_RESOURCES YES
     setenv REMOVE_GIT_FROM_RESOURCES YES
+    setenv REMOVE_HG_FROM_RESOURCES YES
     setenv REMOVE_SVN_FROM_RESOURCES YES
     setenv REZ_COLLECTOR_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/ResourceManagerResources"
     setenv REZ_OBJECTS_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/ResourceManagerResources/Objects"
@@ -334,9 +340,10 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv SCRIPTS_FOLDER_PATH Dope.app/Scripts
     setenv SCRIPT_INPUT_FILE_COUNT 0
     setenv SCRIPT_OUTPUT_FILE_COUNT 0
-    setenv SDKROOT /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk
-    setenv SDK_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk
-    setenv SDK_NAME iphonesimulator4.2
+    setenv SDKROOT /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.0.sdk
+    setenv SDK_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.0.sdk
+    setenv SDK_NAME iphonesimulator5.0
+    setenv SDK_PRODUCT_BUILD_VERSION 9A334
     setenv SED /usr/bin/sed
     setenv SEPARATE_STRIP NO
     setenv SEPARATE_SYMBOL_EDIT NO
@@ -347,15 +354,14 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv SHARED_FRAMEWORKS_FOLDER_PATH Dope.app/SharedFrameworks
     setenv SHARED_PRECOMPS_DIR /var/folders/-B/-BaPnm+XGW8DJjz1cXvjF++++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders
     setenv SHARED_SUPPORT_FOLDER_PATH Dope.app/SharedSupport
-    setenv SKIP_INSTALL YES
+    setenv SKIP_INSTALL NO
     setenv SOURCE_ROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv SRCROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
-    setenv STANDARD_C_PLUS_PLUS_LIBRARY_TYPE dynamic
     setenv STRINGS_FILE_OUTPUT_ENCODING binary
     setenv STRIP_INSTALLED_PRODUCT YES
     setenv STRIP_STYLE all
     setenv SUPPORTED_DEVICE_FAMILIES "1 2"
-    setenv SYMBOL_REPOSITORY_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/SymbolRepositories"
+    setenv SUPPORTED_PLATFORMS "iphonesimulator iphoneos"
     setenv SYMROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
     setenv SYSTEM_ADMIN_APPS_DIR /Applications/Utilities
     setenv SYSTEM_APPS_DIR /Applications
@@ -386,6 +392,7 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv TEMP_FILES_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build"
     setenv TEMP_FILE_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build"
     setenv TEMP_ROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
+    setenv TEST_AFTER_BUILD YES
     setenv TI_APPID com.strelets.dope
     setenv TI_SDK_DIR "/Library/Application Support/Titanium/mobilesdk/osx/1.8.0.1/iphone"
     setenv TI_VERSION 1.8.0.1
@@ -409,44 +416,59 @@ PhaseScriptExecution Pre-Compile build/Dope.build/Debug-iphonesimulator/Dope.bui
     setenv WRAPPER_NAME Dope.app
     setenv WRAPPER_SUFFIX .app
     setenv XCODE_APP_SUPPORT_DIR /Developer/Library/Xcode
-    setenv XCODE_PRODUCT_BUILD_VERSION 10M2423
-    setenv XCODE_VERSION_ACTUAL 0325
-    setenv XCODE_VERSION_MAJOR 0300
-    setenv XCODE_VERSION_MINOR 0320
+    setenv XCODE_PRODUCT_BUILD_VERSION 4C199
+    setenv XCODE_VERSION_ACTUAL 0420
+    setenv XCODE_VERSION_MAJOR 0400
+    setenv XCODE_VERSION_MINOR 0420
     setenv YACC /Developer/usr/bin/yacc
     /bin/sh -c "\"/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/Script-241EAF36118E30260081A5BE.sh\""
-
 [INFO] One moment, building ...
 [INFO] Titanium SDK version: 1.8.0.1
 [INFO] iPhone Device family: iphone
-[INFO] iPhone SDK version: 4.2
+[INFO] iPhone SDK version: 5.0
 [DEBUG] Detecting modules in /Users/dark/Documents/Titanium Studio Workspace/Dope/modules
 [DEBUG] Detecting modules in /Library/Application Support/Titanium/modules
 [DEBUG] copy resources from /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/iphone to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app
 [DEBUG] copy resources from /Users/dark/Documents/Titanium Studio Workspace/Dope/platform/iphone to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app
 [INFO] Skipping JS compile, running from simulator
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/app.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/app.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/defines.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/defines.js
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/KS_nav_ui.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/KS_nav_ui.png
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/KS_nav_views.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/KS_nav_views.png
+[DEBUG] creating: /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/lib
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/privacypolicy.txt to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/privacypolicy.txt
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/termsofuse.txt to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/termsofuse.txt
+[DEBUG] creating: /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/chat.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/chat.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/login.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/login.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/partyline.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/partyline.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/profile.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/profile.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/scopeout.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/scopeout.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/textFile.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/textFile.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/verifyAcc.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/verifyAcc.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/wizard1.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/wizard1.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/wizard2.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/wizard2.js
+[DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/windows/wizard3.js to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/windows/wizard3.js
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/iphone/appicon.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/appicon.png
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/iphone/Default-Landscape.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/Default-Landscape.png
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/iphone/Default-Portrait.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/Default-Portrait.png
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/iphone/Default.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/Default.png
 [DEBUG] linking: /Users/dark/Documents/Titanium Studio Workspace/Dope/Resources/iphone/Default@2x.png to /Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app/Default@2x.png
-CpResource build/Debug-iphonesimulator/Dope.app/Default.png Resources/Default.png
+
+CpResource Resources/Default.png build/Debug-iphonesimulator/Dope.app/Default.png
     cd "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/Resources/Default.png" "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app"
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/Resources/Default.png" "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app"
 
 CopyPlistFile build/Debug-iphonesimulator/Dope.app/stylesheet.plist Resources/stylesheet.plist
     cd "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copyplist --convert binary1 Resources/stylesheet.plist --outdir "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app"
+    builtin-copyPlist --convert binary1 --outdir "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app" -- Resources/stylesheet.plist
 
 CopyPlistFile build/Debug-iphonesimulator/Dope.app/debugger.plist Resources/debugger.plist
     cd "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copyplist --convert binary1 Resources/debugger.plist --outdir "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app"
+    builtin-copyPlist --convert binary1 --outdir "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app" -- Resources/debugger.plist
 
 PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.build/Script-24CA8D03111169070084E2DE.sh
     cd "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
@@ -464,10 +486,11 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv ARCHS i386
     setenv ARCHS_STANDARD_32_BIT i386
     setenv ARCHS_UNIVERSAL_IPHONE_OS i386
+    setenv AVAILABLE_PLATFORMS "iphonesimulator macosx iphoneos"
     setenv BUILD_COMPONENTS "headers build"
     setenv BUILD_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
     setenv BUILD_ROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
-    setenv BUILD_STYLE Debug
+    setenv BUILD_STYLE 
     setenv BUILD_VARIANTS normal
     setenv BUILT_PRODUCTS_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator"
     setenv CACHE_ROOT /var/folders/-B/-BaPnm+XGW8DJjz1cXvjF++++TI/-Caches-/com.apple.Xcode.501
@@ -495,6 +518,7 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv DEAD_CODE_STRIPPING NO
     setenv DEBUGGING_SYMBOLS YES
     setenv DEBUG_INFORMATION_FORMAT dwarf-with-dsym
+    setenv DEFAULT_COMPILER com.apple.compilers.llvm.clang.1_0
     setenv DEPLOYMENT_LOCATION NO
     setenv DEPLOYMENT_POSTPROCESSING NO
     setenv DERIVED_FILES_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/DerivedSources"
@@ -514,12 +538,13 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv DO_HEADER_SCANNING_IN_JAM NO
     setenv DSTROOT /tmp/Dope.dst
     setenv DWARF_DSYM_FILE_NAME Dope.app.dSYM
+    setenv DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT NO
     setenv DWARF_DSYM_FOLDER_PATH "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator"
     setenv EFFECTIVE_PLATFORM_NAME -iphonesimulator
     setenv ENABLE_HEADER_DEPENDENCIES YES
     setenv ENABLE_OPENMP_SUPPORT NO
-    setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS ".svn .git CVS"
-    setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES "*.nib *.lproj *.framework *.gch (*) CVS .svn .git *.xcodeproj *.xcode *.pbproj *.pbxproj"
+    setenv EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS ".DS_Store .svn .git .hg CVS"
+    setenv EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES "*.nib *.lproj *.framework *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj"
     setenv EXECUTABLES_FOLDER_PATH Dope.app/Executables
     setenv EXECUTABLE_FOLDER_PATH Dope.app
     setenv EXECUTABLE_NAME Dope
@@ -541,10 +566,10 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv GCC_PFE_FILE_C_DIALECTS "c objective-c c++ objective-c++"
     setenv GCC_PRECOMPILE_PREFIX_HEADER YES
     setenv GCC_PREFIX_HEADER Dope_Prefix.pch
-    setenv GCC_PREPROCESSOR_DEFINITIONS "__LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1"
+    setenv GCC_PREPROCESSOR_DEFINITIONS "__LOG__ID__=b74443de-a01c-42b4-b942-6c85a0a11c13 DEPLOYTYPE=development TI_DEVELOPMENT=1 DEBUG=1 TI_VERSION=1.8.0.1 DEBUGGER_ENABLED=1 "
     setenv GCC_SYMBOLS_PRIVATE_EXTERN YES
     setenv GCC_TREAT_WARNINGS_AS_ERRORS NO
-    setenv GCC_VERSION 4.2
+    setenv GCC_VERSION com.apple.compilers.llvm.clang.1_0
     setenv GCC_WARN_ABOUT_RETURN_TYPE NO
     setenv GCC_WARN_MISSING_PARENTHESES NO
     setenv GCC_WARN_SHADOW NO
@@ -562,7 +587,7 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES YES
     setenv HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS YES
     setenv HEADERMAP_INCLUDES_PROJECT_HEADERS YES
-    setenv HEADER_SEARCH_PATHS "\"/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/include\" /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 headers"
+    setenv HEADER_SEARCH_PATHS "\"/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/include\" /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.0.sdk/usr/include/libxml2 headers"
     setenv ICONV /usr/bin/iconv
     setenv INFOPLIST_EXPAND_BUILD_SETTINGS YES
     setenv INFOPLIST_FILE Info.plist
@@ -570,11 +595,11 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv INFOPLIST_PATH Dope.app/Info.plist
     setenv INFOPLIST_PREPROCESS NO
     setenv INFOSTRINGS_PATH Dope.app/English.lproj/InfoPlist.strings
-    setenv INSTALL_DIR /tmp/Dope.dst/Users/dark/Applications
+    setenv INSTALL_DIR /tmp/Dope.dst/Applications
     setenv INSTALL_GROUP staff
     setenv INSTALL_MODE_FLAG u+w,go-w,a+rX
     setenv INSTALL_OWNER dark
-    setenv INSTALL_PATH /Users/dark/Applications
+    setenv INSTALL_PATH /Applications
     setenv INSTALL_ROOT /tmp/Dope.dst
     setenv IPHONEOS_DEPLOYMENT_TARGET 4.0
     setenv JAVAC_DEFAULT_FLAGS "-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"
@@ -592,7 +617,9 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv KEEP_PRIVATE_EXTERNS NO
     setenv LD_GENERATE_MAP_FILE NO
     setenv LD_MAP_FILE_PATH "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/Dope-LinkMap-normal-i386.txt"
+    setenv LD_NO_PIE NO
     setenv LD_OPENMP_FLAGS -fopenmp
+    setenv LEGACY_DEVELOPER_DIR /Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
     setenv LEX /Developer/usr/bin/lex
     setenv LIBRARY_FLAG_NOSPACE YES
     setenv LIBRARY_FLAG_PREFIX -l
@@ -607,6 +634,7 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv LOCAL_LIBRARY_DIR /Library
     setenv MACH_O_TYPE mh_execute
     setenv MACOSX_DEPLOYMENT_TARGET 10.6
+    setenv MAC_OS_X_PRODUCT_BUILD_VERSION 10K549
     setenv MAC_OS_X_VERSION_ACTUAL 1068
     setenv MAC_OS_X_VERSION_MAJOR 1060
     setenv MAC_OS_X_VERSION_MINOR 0608
@@ -636,17 +664,17 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv PKGINFO_PATH Dope.app/PkgInfo
     setenv PLATFORM_DEVELOPER_APPLICATIONS_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/Applications
     setenv PLATFORM_DEVELOPER_BIN_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin
-    setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/Library
+    setenv PLATFORM_DEVELOPER_LIBRARY_DIR /Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library
     setenv PLATFORM_DEVELOPER_SDK_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs
     setenv PLATFORM_DEVELOPER_TOOLS_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/Tools
     setenv PLATFORM_DEVELOPER_USR_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/usr
     setenv PLATFORM_DIR /Developer/Platforms/iPhoneSimulator.platform
     setenv PLATFORM_NAME iphonesimulator
-    setenv PLATFORM_PRODUCT_BUILD_VERSION 8C134
-    setenv PLATFORM_VERSION_AVAILABILITY_H_FORMAT 40200
+    setenv PLATFORM_PREFERRED_ARCH i386
+    setenv PLATFORM_PRODUCT_BUILD_VERSION 9A334
+    setenv PLATFORM_VERSION_AVAILABILITY_H_FORMAT 50000
     setenv PLIST_FILE_OUTPUT_FORMAT binary
     setenv PLUGINS_FOLDER_PATH Dope.app/PlugIns
-    setenv PREBINDING YES
     setenv PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR YES
     setenv PRECOMP_DESTINATION_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/PrefixHeaders"
     setenv PRESERVE_DEAD_CODE_INITS_AND_TERMS NO
@@ -665,6 +693,7 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS YES
     setenv REMOVE_CVS_FROM_RESOURCES YES
     setenv REMOVE_GIT_FROM_RESOURCES YES
+    setenv REMOVE_HG_FROM_RESOURCES YES
     setenv REMOVE_SVN_FROM_RESOURCES YES
     setenv REZ_COLLECTOR_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/ResourceManagerResources"
     setenv REZ_OBJECTS_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/ResourceManagerResources/Objects"
@@ -674,9 +703,10 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv SCRIPTS_FOLDER_PATH Dope.app/Scripts
     setenv SCRIPT_INPUT_FILE_COUNT 0
     setenv SCRIPT_OUTPUT_FILE_COUNT 0
-    setenv SDKROOT /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk
-    setenv SDK_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk
-    setenv SDK_NAME iphonesimulator4.2
+    setenv SDKROOT /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.0.sdk
+    setenv SDK_DIR /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.0.sdk
+    setenv SDK_NAME iphonesimulator5.0
+    setenv SDK_PRODUCT_BUILD_VERSION 9A334
     setenv SED /usr/bin/sed
     setenv SEPARATE_STRIP NO
     setenv SEPARATE_SYMBOL_EDIT NO
@@ -687,15 +717,14 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv SHARED_FRAMEWORKS_FOLDER_PATH Dope.app/SharedFrameworks
     setenv SHARED_PRECOMPS_DIR /var/folders/-B/-BaPnm+XGW8DJjz1cXvjF++++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders
     setenv SHARED_SUPPORT_FOLDER_PATH Dope.app/SharedSupport
-    setenv SKIP_INSTALL YES
+    setenv SKIP_INSTALL NO
     setenv SOURCE_ROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv SRCROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
-    setenv STANDARD_C_PLUS_PLUS_LIBRARY_TYPE dynamic
     setenv STRINGS_FILE_OUTPUT_ENCODING binary
     setenv STRIP_INSTALLED_PRODUCT YES
     setenv STRIP_STYLE all
     setenv SUPPORTED_DEVICE_FAMILIES "1 2"
-    setenv SYMBOL_REPOSITORY_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/SymbolRepositories"
+    setenv SUPPORTED_PLATFORMS "iphonesimulator iphoneos"
     setenv SYMROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
     setenv SYSTEM_ADMIN_APPS_DIR /Applications/Utilities
     setenv SYSTEM_APPS_DIR /Applications
@@ -726,6 +755,7 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv TEMP_FILES_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build"
     setenv TEMP_FILE_DIR "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build"
     setenv TEMP_ROOT "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build"
+    setenv TEST_AFTER_BUILD YES
     setenv TI_APPID com.strelets.dope
     setenv TI_SDK_DIR "/Library/Application Support/Titanium/mobilesdk/osx/1.8.0.1/iphone"
     setenv TI_VERSION 1.8.0.1
@@ -749,18 +779,19 @@ PhaseScriptExecution Post-Compile build/Dope.build/Debug-iphonesimulator/Dope.bu
     setenv WRAPPER_NAME Dope.app
     setenv WRAPPER_SUFFIX .app
     setenv XCODE_APP_SUPPORT_DIR /Developer/Library/Xcode
-    setenv XCODE_PRODUCT_BUILD_VERSION 10M2423
-    setenv XCODE_VERSION_ACTUAL 0325
-    setenv XCODE_VERSION_MAJOR 0300
-    setenv XCODE_VERSION_MINOR 0320
+    setenv XCODE_PRODUCT_BUILD_VERSION 4C199
+    setenv XCODE_VERSION_ACTUAL 0420
+    setenv XCODE_VERSION_MAJOR 0400
+    setenv XCODE_VERSION_MINOR 0420
     setenv YACC /Developer/usr/bin/yacc
     /bin/sh -c "\"/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Dope.build/Debug-iphonesimulator/Dope.build/Script-24CA8D03111169070084E2DE.sh\""
-
 post-compile
+
 Touch build/Debug-iphonesimulator/Dope.app
     cd "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone"
     setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     /usr/bin/touch -c "/Users/dark/Documents/Titanium Studio Workspace/Dope/build/iphone/build/Debug-iphonesimulator/Dope.app"
+
 
 ** BUILD SUCCEEDED **
 
