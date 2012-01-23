@@ -8,7 +8,7 @@ win.backgroundColor = '#999';
 
 
 var l3 = Ti.UI.createLabel({
-	top: 130,
+	top: 80,
 	width: 260,
 	height: 'auto',
 	color: '#666',
@@ -19,7 +19,7 @@ var l3 = Ti.UI.createLabel({
 var tf3 = Ti.UI.createTextField({
 	color: '#369',
 	height: 35,
-	top: 150,
+	top: 100,
 	width: 260,
 	textAlign: "center",
 	font: {fontSize:20},
@@ -28,14 +28,14 @@ var tf3 = Ti.UI.createTextField({
 });
 
 var spinner = Ti.UI.createActivityIndicator({
-	center: {y:220},
+	center: {y:240},
 	width:30,
 	height:30,
 	style: Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
 });
 
 var loginButton = Ti.UI.createButton({
-	top:250,
+	top:270,
 	height:40,
 	width:200,
 	title:'Sign In'
@@ -72,9 +72,8 @@ loginButton.addEventListener("click", function() {
 				// save login info to application preferences
 				
 				// and close dialog
-				Ti.API.log("firing global event");
+				tf3.value = "";
 				Ti.App.fireEvent("startProfileWizard");
-				Ti.App.fireEvent("loggedIn");
 			}	        
 	        spinner.hide();
 	        that.enabled = true;
@@ -108,3 +107,6 @@ win.add(l3);
 win.add(spinner);
 win.add(loginButton);
 
+win.addEventListener("open", function () {
+	tf3.value = "";
+});

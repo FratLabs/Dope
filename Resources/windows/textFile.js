@@ -26,6 +26,6 @@ var textArea = Titanium.UI.createLabel({
 	font: {fontSize:13},
 	text: termsString
 })
-Titanium.API.log("textAreaHeight: " + textArea.height);
+//Titanium.API.log("textAreaHeight: " + textArea.height);
 scrollView.add(textArea);
 win.add(scrollView);

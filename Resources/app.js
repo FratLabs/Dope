@@ -1,3 +1,5 @@
+//var NavigationController = require('/lib/NavigationController').NavigationController;
+
 Ti.UI.setBackgroundColor('#000');
 
 // create tab group
@@ -11,7 +13,7 @@ var winParty = Ti.UI.createWindow({
 });
 
 var winScope = Ti.UI.createWindow({
-	url: '/windows/scopeout.js'
+	url: '/windows/scopeout.js',
 });
 var winChat = Ti.UI.createWindow({
 	url: '/windows/chat.js'
@@ -48,6 +50,7 @@ tabGroup.open();
 
 Ti.App.addEventListener("loggedIn", function (e) {
 	Ti.API.log("loggedIn");
+	loginWindow.close();
 })
 Ti.App.addEventListener("relogin", function (e) {
 	Ti.API.log("relogin");
@@ -73,6 +76,6 @@ loginWelcomeWindow.navGroup = loginNavigationGroup;
 
 loginWindow.add(loginNavigationGroup);
 
-if (! Ti.App.Properties.getString("login").length ) {
+if (Ti.App.Properties.hasProperty("login") == false || Ti.App.Properties.getString("login").length == 0) {
 	loginWindow.open();
 }

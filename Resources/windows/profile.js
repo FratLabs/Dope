@@ -18,39 +18,18 @@ closeButton.addEventListener("click", function (e) {
 	
 })
 
-var wizardButton = Ti.UI.createButton ({
-	top:50,
+var emailLabel = Ti.UI.createLabel({
+	top:20,
 	width:200,
-	height:40,
-	title:"Run Wizard"
+	height:30,
+	color:"#000",
+	font:{fontSize:15,fontWeight:"bold"},
+	textAlign: "center",
+	text: Ti.App.Properties.getString("login")
 })
 
-wizardButton.addEventListener("click", function() {
-	Ti.API.log("run profile wizard!");
-	
-	var wizardWindow = Ti.UI.createWindow({
-		navBarHidden: true,
-		modal : true,
-		modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
-	});
-	
-	var wizardStep1Window = Ti.UI.createWindow({
-		url: '/windows/wizard1.js',
-	});
-	
-	var wizardNavigationGroup = Ti.UI.iPhone.createNavigationGroup({
-	   window: wizardStep1Window
-	});
-	
-	wizardStep1Window.navGroup = wizardNavigationGroup;
-	
-	wizardWindow.add(wizardNavigationGroup);
-
-	wizardWindow.open();
-});
-
 var logoutButton = Ti.UI.createButton ({
-	top:100,
+	bottom:20,
 	width:200,
 	height:40,
 	title:"Log Out"
@@ -69,5 +48,6 @@ logoutButton.addEventListener("click", function() {
 	}, 1000);
 })
 
-win.add(wizardButton);
+//win.add(wizardButton);
+win.add(emailLabel);
 win.add(logoutButton);

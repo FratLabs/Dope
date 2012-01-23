@@ -21,16 +21,6 @@ var p1 = Ti.UI.createImageView({
 })
 
 
-var facebookButton = Ti.UI.createButton({
-	bottom:30,
-	height:40,
-	width:200,
-	backgroundImage:"none",
-	backgroundColor:"#369",
-	color: "#FFF",
-	title:'Connect with Facebook'
-})
-
 var actionSheet = Titanium.UI.createOptionDialog({
 	options: ['Take a photo','Pick from camera roll', "Cancel"],
 	cancel:2
@@ -134,12 +124,23 @@ p1.addEventListener("click", function() {
 	actionSheet.show();
 })
 
-facebookButton.addEventListener("click", function() {
-	
-})
+function updateLoginStatus() {
+	alert('Logged In = ' + Titanium.Facebook.loggedIn);
+}
+
+// capture
+Titanium.Facebook.addEventListener('login', updateLoginStatus);
+Titanium.Facebook.addEventListener('logout', updateLoginStatus);
+
+Titanium.Facebook.appid = "134793934930";
+Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
+
+win.add(Titanium.Facebook.createLoginButton({
+	style:Ti.Facebook.BUTTON_STYLE_WIDE,
+	bottom:30
+}));
 
 win.add(l1);
 win.add(p1);
-win.add(facebookButton);
 
 

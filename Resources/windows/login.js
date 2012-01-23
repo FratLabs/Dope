@@ -9,7 +9,7 @@ win.backgroundColor = '#999';
 
 
 var l1 = Ti.UI.createLabel({
-	top:70,
+	top:20,
 	width:260,
 	height:'auto',
 	color:'#666',
@@ -18,7 +18,7 @@ var l1 = Ti.UI.createLabel({
 });
 
 var l2 = Ti.UI.createLabel({
-	top:130,
+	top:80,
 	width:260,
 	height:'auto',
 	color:'#666',
@@ -26,20 +26,40 @@ var l2 = Ti.UI.createLabel({
 	text: 'Password'
 });
 
+var l3 = Ti.UI.createLabel({
+	top:140,
+	width:260,
+	height:'auto',
+	color:'#666',
+	font: { fontSize:15, fontWeight:"bold" },
+	text: 'Confirm password'
+});
+
 var tf1 = Ti.UI.createTextField({
 	color:'#369',
 	height:35,
-	top:90,
+	top:40,
 	width:260,
-	keyboardType: Titanium.UI.KEYBOARD_EMAIL,
-	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
-	borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+	keyboardType: Ti.UI.KEYBOARD_EMAIL,
+	returnKeyType: Ti.UI.RETURNKEY_NEXT,
+	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
 });
 
 var tf2 = Ti.UI.createTextField({
 	color:'#369',
 	height:35,
-	top:150,
+	top:100,
+	width:260,
+	passwordMask:true,
+	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+});
+
+var tf3 = Ti.UI.createTextField({
+	color:'#369',
+	height:35,
+	top:160,
 	width:260,
 	passwordMask:true,
 	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
@@ -51,11 +71,12 @@ tf1.addEventListener("return", function() {
 })
 
 tf2.addEventListener("return", function() {
-	
+	if (tf3.enabled)
+		tf3.focus();	
 });
 
 var spinner = Ti.UI.createActivityIndicator({
-	center: {y:220},
+	center: {y:250},
 	width:30,
 	height:30,
 	style: Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
@@ -63,14 +84,14 @@ var spinner = Ti.UI.createActivityIndicator({
 
 
 var loginButton = Ti.UI.createButton({
-	top:250,
+	top:270,
 	height:40,
 	width:200,
 	title:'Sign In'
 });	
 
 var registerButton = Ti.UI.createButton({
-	top:250,
+	top:270,
 	height:40,
 	width:200,
 	title: 'Sign Up',
@@ -116,23 +137,25 @@ var policyButton = Ti.UI.createButton({
 })
 
 
+var termsWindow = Titanium.UI.createWindow({
+	url: '/windows/textFile.js',
+	fileName: "termsofuse.txt",
+	backgroundColor:"#FFF", 
+	title: termsButton.title,
+})
 termsButton.addEventListener("click", function(e) {
-
-	var termsWindow = Titanium.UI.createWindow({
-		url: '/windows/textFile.js',
-		fileName: "termsofuse.txt", 
-		title: this.title,
-	})
 	navGroup.open(termsWindow, {animated:true});
 })
 
-policyButton.addEventListener("click", function(e) {
 
-	var policyWindow = Titanium.UI.createWindow({
-		url: '/windows/textFile.js',
-		fileName: "privacypolicy.txt", 
-		title: this.title,
-	})
+var policyWindow = Titanium.UI.createWindow({
+	url: '/windows/textFile.js',
+	fileName: "privacypolicy.txt", 
+	backgroundColor:"#FFF", 
+	title: policyButton.title,
+})
+
+policyButton.addEventListener("click", function(e) {
 	navGroup.open(policyWindow, {animated:true});
 })
 
@@ -145,6 +168,10 @@ var a2 = Ti.UI.createAnimation();
 a2.opacity = 1;
 a2.duration = 500;
 
+var verifyWindow = Titanium.UI.createWindow({
+	url: '/windows/verifyAcc.js',
+	navGroup: win.navGroup,
+})
 
 function checkLoginServerResponse(button, response) {
 	spinner.hide();
@@ -166,21 +193,18 @@ function checkLoginServerResponse(button, response) {
 		Ti.App.Properties.setString("login", tf1.value);
 		Ti.App.Properties.setString("pass", Ti.Utils.md5HexDigest(tf2.value));
 
+		tf1.value = "";
+		tf2.value = "";
+		tf3.value = "";
+
 		// first time logged in
 		if (data.verifyNeeded) {
-
 			// need to approve registration with verification code
-			var verifyWindow = Titanium.UI.createWindow({
-				url: '/windows/verifyAcc.js',
-				navGroup: navGroup,
-			})
 			navGroup.open(verifyWindow, {animated:true});
-
-
 		} else {
 			
 			// and close dialog
-			Ti.App.fireEvent("startProfileWizard");
+//			Ti.App.fireEvent("startProfileWizard");
 			Ti.App.fireEvent("loggedIn");
 		}
 	}
@@ -188,64 +212,80 @@ function checkLoginServerResponse(button, response) {
 }
 
 loginButton.addEventListener("click", function() {
-	spinner.show();
-	
-	this.enabled = false;
-	var that = this;
- 
-	var xhr = Ti.Network.createHTTPClient({
-	    onload: function(e) {
-			checkLoginServerResponse(that, this);
-	    },
-	    onerror: function(e) {
-	        Ti.API.debug(e.error);
-	        alert("Couldn't connect to server");
-	        
-	        that.enabled = true;
-	        spinner.hide();
-	    },
-	    timeout: Defaults.NETWORK_TIMEOUT * 1000
-	});
-	
-	var url = Defaults.HTTP_SERVER_NAME 
-		+ Defaults.LOGIN_SCRIPT_NAME 
-		+ "?login="+ tf1.value 
-		+ "&pass=" + Ti.Utils.md5HexDigest(tf2.value);		 
+	if (! tf1.value.length)	{
+		alert("empty email field");
+	} else if (! tf2.value.length) {
+		alert("empty password field");
+	} else {
+		spinner.show();
 		
-	Ti.API.log("URL:" + url);
-	xhr.open("GET", url);
-	xhr.send();		
+		this.enabled = false;
+		var that = this;
+	 
+		var xhr = Ti.Network.createHTTPClient({
+		    onload: function(e) {
+				checkLoginServerResponse(that, this);
+		    },
+		    onerror: function(e) {
+		        Ti.API.debug(e.error);
+		        alert("Couldn't connect to server");
+		        
+		        that.enabled = true;
+		        spinner.hide();
+		    },
+		    timeout: Defaults.NETWORK_TIMEOUT * 1000
+		});
+		
+		var url = Defaults.HTTP_SERVER_NAME 
+			+ Defaults.LOGIN_SCRIPT_NAME 
+			+ "?login="+ tf1.value 
+			+ "&pass=" + Ti.Utils.md5HexDigest(tf2.value);		 
+			
+		Ti.API.log("URL:" + url);
+		xhr.open("GET", url);
+		xhr.send();		
+	}
 });
 
 registerButton.addEventListener("click", function (e) {
-	spinner.show();
+
+	if (! tf1.value.length)	{
+		alert("empty email field");
+	} else if (! tf2.value.length) {
+		alert("empty password field");
+	} else if (tf2.value.length < 6) {
+		alert("password too short, 6 symbols at least");
+	} else if (tf3.value != tf2.value) {
+		alert ("passwords do not match");
+	} else {
+		spinner.show();
 	
-	this.enabled = false;
-	var that = this;
- 
-	var xhr = Ti.Network.createHTTPClient({
-	    onload: function(e) {
-			checkLoginServerResponse(that, this);
-	    },
-	    onerror: function(e) {
-	        Ti.API.debug(e.error);
-	        alert("Couldn't connect to server");
-	        
-	        that.enabled = true;
-	        spinner.hide();
-	    },
-	    timeout: Defaults.NETWORK_TIMEOUT * 1000
-	});
-	
-	var url = Defaults.HTTP_SERVER_NAME 
-		+ Defaults.SIGNUP_SCRIPT_NAME 
-		+ "?login="+ tf1.value 
-		+ "&pass=" + Ti.Utils.md5HexDigest(tf2.value);		 
+		this.enabled = false;
+		var that = this;
+	 
+		var xhr = Ti.Network.createHTTPClient({
+		    onload: function(e) {
+				checkLoginServerResponse(that, this);
+		    },
+		    onerror: function(e) {
+		        Ti.API.debug(e.error);
+		        alert("Couldn't connect to server");
+		        
+		        that.enabled = true;
+		        spinner.hide();
+		    },
+		    timeout: Defaults.NETWORK_TIMEOUT * 1000
+		});
 		
-	Ti.API.log("URL:" + url);
-	xhr.open("GET", url);
-	xhr.send();		
-		
+		var url = Defaults.HTTP_SERVER_NAME 
+			+ Defaults.SIGNUP_SCRIPT_NAME 
+			+ "?login="+ tf1.value 
+			+ "&pass=" + Ti.Utils.md5HexDigest(tf2.value);		 
+			
+		Ti.API.log("URL:" + url);
+		xhr.open("GET", url);
+		xhr.send();		
+	}		
 });
 
 firstTimeButton.addEventListener("click", function() {
@@ -255,6 +295,9 @@ firstTimeButton.addEventListener("click", function() {
 		
 		registerButton.animate(a2);
 		registerButton.enabled = true;
+		tf3.animate(a2);
+		l3.animate(a2);
+		tf3.enabled = true;
 	
 		this.titleDefault = this.title;
 		this.title = "Back to Sign In";
@@ -263,6 +306,9 @@ firstTimeButton.addEventListener("click", function() {
 
 		registerButton.animate(a1);
 		registerButton.enabled = false;
+		tf3.animate(a1);
+		l3.animate(a1);
+		tf3.enabled = false;
 
 		this.title = this.titleDefault;
 	}
@@ -275,6 +321,13 @@ win.add(l1);
 win.add(tf2);
 win.add(l2);
 
+tf3.enabled = false;
+tf3.opacity = 0;
+l3.opacity  = 0;
+
+win.add(tf3);
+win.add(l3);
+
 win.add(spinner);
 //spinner.show();
 
@@ -285,6 +338,16 @@ win.add(firstTimeButton);
 win.add(policyButton);
 win.add(termsButton);
 
+win.addEventListener("open", function () {
+	Ti.API.log("login window open event")
+	tf1.value = "";
+	tf2.value = "";
+	tf3.value = "";
+	spinner.hide();
+});
+win.addEventListener("focus", function () {
+	Ti.API.log("login window focus event")
+})
 if (! Ti.Network.online) {
 	
 	alert("Network connection required");
