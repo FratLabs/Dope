@@ -47,31 +47,12 @@ tabGroup.open();
 
 
 Ti.App.addEventListener("loggedIn", function (e) {
-	alert ("closing modal window");
-	loginWindow.close();
+	Ti.API.log("loggedIn");
 })
-
-Ti.App.addEventListener("startProfileWizard", function (e) {
-	alert ("start Profile Wizard");
-	
-	var wizardWindow = Ti.UI.createWindow({
-		navBarHidden: true,
-		modal : true,
-		modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
-	});
-	var wizardStep1Window = Ti.UI.createWindow({
-		url: 'windows/wizard1.js'
-	});
-	var wizNavigationGroup = Ti.UI.iPhone.createNavigationGroup({
-		window: wizardStep1Window
-	});
-	
-	wizardStep1Window.navGroup = wizNavigationGroup;
-	wizardWindow.add(wizNavigationGroup);
-	
-	wizardWindow.open();
+Ti.App.addEventListener("relogin", function (e) {
+	Ti.API.log("relogin");
+	loginWindow.open();
 })
-
 
 var loginWindow = Ti.UI.createWindow({
 	navBarHidden: true,
@@ -81,6 +62,7 @@ var loginWindow = Ti.UI.createWindow({
 
 var loginWelcomeWindow = Ti.UI.createWindow({
 	url: 'windows/login.js',
+	backgroundColor: "#999"
 });
 
 var loginNavigationGroup = Ti.UI.iPhone.createNavigationGroup({

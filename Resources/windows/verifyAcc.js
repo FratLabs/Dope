@@ -41,6 +41,15 @@ var loginButton = Ti.UI.createButton({
 	title:'Sign In'
 });	
 
+var wizardStep1Window = Ti.UI.createWindow({
+	url: '/windows/wizard1.js',
+	navGroup: win.navGroup
+});
+
+Ti.App.addEventListener("startProfileWizard", function (e) {
+	win.navGroup.open(wizardStep1Window, {animated:true});
+})
+
 loginButton.addEventListener("click", function() {
 	
 	spinner.show();
@@ -64,8 +73,8 @@ loginButton.addEventListener("click", function() {
 				
 				// and close dialog
 				Ti.API.log("firing global event");
-				Ti.App.fireEvent("loggedIn");
 				Ti.App.fireEvent("startProfileWizard");
+				Ti.App.fireEvent("loggedIn");
 			}	        
 	        spinner.hide();
 	        that.enabled = true;

@@ -137,7 +137,6 @@ policyButton.addEventListener("click", function(e) {
 })
 
 
-
 var a1 = Ti.UI.createAnimation()
 a1.opacity = 0;
 a1.duration = 500;
@@ -181,6 +180,7 @@ function checkLoginServerResponse(button, response) {
 		} else {
 			
 			// and close dialog
+			Ti.App.fireEvent("startProfileWizard");
 			Ti.App.fireEvent("loggedIn");
 		}
 	}
