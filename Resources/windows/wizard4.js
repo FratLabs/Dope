@@ -10,5 +10,4 @@ win.rightNavButton = nextButton;
 
 nextButton.addEventListener("click", function () {
 	win.navGroup.parent.close({animated:false});
-//	Ti.App.fireEvent("openProfile");
 });

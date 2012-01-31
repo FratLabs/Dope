@@ -6,7 +6,49 @@ var navGroup = win.navGroup;
 win.title = 'Welcome';
 win.backgroundColor = '#999';
 
+// PRIVATE FUNCTIONS
 
+function checkLoginServerResponse(button, response) {
+	spinner.hide();
+	button.enabled = true;
+
+	var data = JSON.parse(response.responseText);
+
+//	Ti.API.log("CHECKLOGINSERVER\ndata status1: " + data.status + " verify1: " + data.verifyNeeded);
+
+	// get error response from server
+	if (data.status != "ok") {
+	
+		alert(data.errorMessage);
+		tf1.blur();
+		tf2.blur();
+		tf3.blur();
+	
+	} else {
+		
+		// save login info to application preferences
+		Ti.App.Properties.setString("login", tf1.value);
+		Ti.App.Properties.setString("pass", Ti.Utils.md5HexDigest(tf2.value));
+
+//		tf1.value = "";
+		tf2.value = "";
+		tf3.value = "";
+
+		// first time logged in
+		if (data.verifyNeeded) {
+			// need to approve registration with verification code
+			navGroup.open(verifyWindow, {animated:true});
+		} else {
+			
+			// and close dialog
+//			Ti.App.fireEvent("startProfileWizard");
+			Ti.App.fireEvent("loggedIn");
+		}
+	}
+	
+}
+
+// INTERFACE COMPONENTS 
 
 var l1 = Ti.UI.createLabel({
 	top:20,
@@ -52,7 +94,7 @@ var tf2 = Ti.UI.createTextField({
 	top:100,
 	width:260,
 	passwordMask:true,
-	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
+	returnKeyType: Ti.UI.RETURNKEY_NEXT,
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
 });
 
@@ -62,26 +104,16 @@ var tf3 = Ti.UI.createTextField({
 	top:160,
 	width:260,
 	passwordMask:true,
-	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
+	returnKeyType: Ti.UI.RETURNKEY_NEXT,
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
-});
-
-tf1.addEventListener("return", function() {
-	tf2.focus();
-})
-
-tf2.addEventListener("return", function() {
-	if (tf3.enabled)
-		tf3.focus();	
 });
 
 var spinner = Ti.UI.createActivityIndicator({
 	center: {y:250},
 	width:30,
 	height:30,
-	style: Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
+	style: Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
 });
-
 
 var loginButton = Ti.UI.createButton({
 	top:270,
@@ -100,11 +132,11 @@ var registerButton = Ti.UI.createButton({
 });	
 
 var firstTimeButton = Ti.UI.createButton({
-	top:310,
+	top:320,
 	height:40,
 	width:200,
-	title: "This is my first time",
-	color: "#00f",
+	title: "Sign Up",
+	color: "#369",
 	backgroundImage: "none",
 	backgroundColor: "transparent"
 });
@@ -115,7 +147,7 @@ var termsButton = Ti.UI.createButton({
 	bottom: 10,
 	height: 30,
 	width: 100,
-	color: "#00f",
+	color: "#369",
 	backgroundColor: "transparent",
 	backgroundImage: "none",
 	font: {fontSize: 13},
@@ -129,36 +161,33 @@ var policyButton = Ti.UI.createButton({
 	bottom: 10,
 	height: 30,
 	width: 100,
-	color: "#00f",
+	color: "#369",
 	backgroundColor: "transparent",
 	backgroundImage: "none",
 	font: {fontSize: 13},	
 	className: "smallButton"	
 })
 
-
-var termsWindow = Titanium.UI.createWindow({
+var termsWindow = Ti.UI.createWindow({
 	url: '/windows/textFile.js',
 	fileName: "termsofuse.txt",
 	backgroundColor:"#FFF", 
 	title: termsButton.title,
 })
-termsButton.addEventListener("click", function(e) {
-	navGroup.open(termsWindow, {animated:true});
-})
 
-
-var policyWindow = Titanium.UI.createWindow({
+var policyWindow = Ti.UI.createWindow({
 	url: '/windows/textFile.js',
 	fileName: "privacypolicy.txt", 
 	backgroundColor:"#FFF", 
 	title: policyButton.title,
 })
 
-policyButton.addEventListener("click", function(e) {
-	navGroup.open(policyWindow, {animated:true});
+var verifyWindow = Ti.UI.createWindow({
+	url: '/windows/verifyAcc.js',
+	navGroup: win.navGroup,
 })
 
+// INTERFACE ANIMATIONS
 
 var a1 = Ti.UI.createAnimation()
 a1.opacity = 0;
@@ -168,48 +197,28 @@ var a2 = Ti.UI.createAnimation();
 a2.opacity = 1;
 a2.duration = 500;
 
-var verifyWindow = Titanium.UI.createWindow({
-	url: '/windows/verifyAcc.js',
-	navGroup: win.navGroup,
+
+// UI COMPONENT EVENTS
+
+tf1.addEventListener("return", function() {
+	tf2.focus();
 })
 
-function checkLoginServerResponse(button, response) {
-	spinner.hide();
-	button.enabled = true;
-
-	var data = JSON.parse(response.responseText);
-
-//	Ti.API.log("CHECKLOGINSERVER\ndata status1: " + data.status + " verify1: " + data.verifyNeeded);
-
-	// get error response from server
-	if (data.status != "ok") {
-	
-		alert(data.errorMessage);
-		tf1.focus();
-	
+tf2.addEventListener("return", function() {
+	if (tf3.enabled) {
+		tf3.focus()
 	} else {
-		
-		// save login info to application preferences
-		Ti.App.Properties.setString("login", tf1.value);
-		Ti.App.Properties.setString("pass", Ti.Utils.md5HexDigest(tf2.value));
+		loginButton.fireEvent("click");
+	}	
+});
 
-		tf1.value = "";
-		tf2.value = "";
-		tf3.value = "";
+termsButton.addEventListener("click", function(e) {
+	navGroup.open(termsWindow, {animated:true});
+})
 
-		// first time logged in
-		if (data.verifyNeeded) {
-			// need to approve registration with verification code
-			navGroup.open(verifyWindow, {animated:true});
-		} else {
-			
-			// and close dialog
-//			Ti.App.fireEvent("startProfileWizard");
-			Ti.App.fireEvent("loggedIn");
-		}
-	}
-	
-}
+policyButton.addEventListener("click", function(e) {
+	navGroup.open(policyWindow, {animated:true});
+})
 
 loginButton.addEventListener("click", function() {
 	if (! tf1.value.length)	{
@@ -312,8 +321,17 @@ firstTimeButton.addEventListener("click", function() {
 
 		this.title = this.titleDefault;
 	}
+});
 
+win.addEventListener("open", function () {
+	Ti.API.log("login window open event")
+	spinner.hide();
+});
+win.addEventListener("focus", function () {
+	Ti.API.log("login window focus event")
 })
+
+// BUILDING UI
 
 win.add(tf1);
 win.add(l1);
@@ -338,17 +356,6 @@ win.add(firstTimeButton);
 win.add(policyButton);
 win.add(termsButton);
 
-win.addEventListener("open", function () {
-	Ti.API.log("login window open event")
-	tf1.value = "";
-	tf2.value = "";
-	tf3.value = "";
-	spinner.hide();
-});
-win.addEventListener("focus", function () {
-	Ti.API.log("login window focus event")
-})
 if (! Ti.Network.online) {
-	
 	alert("Network connection required");
 }

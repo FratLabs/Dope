@@ -1,3 +1,47 @@
+var Defaults = 	require("defines");
+var Funcs = 	require("lib/commonFuncs");
+var FB = 		require("lib/facebook");
+var Profile = 	require("lib/profile");
+
+
+// PRIVATE FUNCTIONS
+
+function saveImageToProfile (event) {
+	var cropRect = event.cropRect;
+	var image = event.media;
+
+	// set image view
+//	Ti.API.debug('Our type was: '+event.mediaType);
+
+	p1.image = image;
+
+	Ti.API.info('PHOTO GALLERY SUCCESS cropRect.x ' + cropRect.x + ' cropRect.y ' + cropRect.y  + ' cropRect.height ' + cropRect.height + ' cropRect.width ' + cropRect.width);
+
+
+	// resizing pic from camera (iPhone only)
+	var blob = p1.toImage();
+	blob = blob.imageAsResized (Defaults.MAX_PHOTO_WIDTH, Defaults.MAX_PHOTO_HEIGHT);
+
+	Ti.API.log("save picture to temp");
+	var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory ,'wiz1.jpg');
+	if (! f.exists())
+		f.createFile();
+    f.write(blob);
+	        	
+//	navGroup.parent.fullscreen = false;
+//	Titanium.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
+	navGroup.parent.show();
+}
+
+function profilePicCallback(blob) {
+	p1.image = blob;
+	spinner.hide();
+	
+	Profile.parseFacebookProfile(FB.data)
+}
+
+// INTERFACE COMPONENTS
+
 var win = Ti.UI.currentWindow;
 var navGroup = win.navGroup;
 
@@ -6,7 +50,7 @@ win.backgroundColor = '#FFF';
 
 var l1 = Ti.UI.createLabel({
 	top:50,
-	width:160,
+	width:200,
 	height:'auto',
 	color:'#666',
 	font: { fontSize:15, fontWeight: "bold" },
@@ -15,14 +59,21 @@ var l1 = Ti.UI.createLabel({
 
 var p1 = Ti.UI.createImageView({
 	top:70,
-	width:160,
-	height:160,
+	width:200,
+	height:200,
 	backgroundColor:"#666",
 })
+var spinner = Ti.UI.createActivityIndicator({
+	center: {y:300},
+	width:30,
+	height:30,
+	style: Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+});
 
-
+var optionsDialogNoFB = ['Take a photo','Pick from camera roll', "Cancel"];
+var optionsDialogFB = ['Take a photo','Pick from camera roll', "Pick from Facebook", "Cancel"]
 var actionSheet = Titanium.UI.createOptionDialog({
-	options: ['Take a photo','Pick from camera roll', "Cancel"],
+	options: optionsDialogNoFB,
 	cancel:2
 });
 
@@ -32,11 +83,6 @@ var wizard2Window = Titanium.UI.createWindow({
 })
 
 var nextButton = Ti.UI.createButton({title:"Next"});
-nextButton.addEventListener("click", function () {
-	win.navGroup.open(wizard2Window, {animated:true});
-
-})
-win.rightNavButton = nextButton;
 
 var leftButton = Ti.UI.createButton({
 	width:1,
@@ -44,24 +90,14 @@ var leftButton = Ti.UI.createButton({
 	enabled: false,
 });
 
-win.leftNavButton = leftButton;
+// UI EVENT HANDLERS
 
-function saveImageToProfile(event) {
-	var cropRect = event.cropRect;
-	var image = event.media;
+nextButton.addEventListener("click", function () {
+	Ti.API.log("store the data");
+	win.navGroup.open(wizard2Window, {animated:true});
 
-	// set image view
-	Ti.API.debug('Our type was: '+event.mediaType);
+})
 
-	p1.image = image;
-
-	Titanium.API.info('PHOTO GALLERY SUCCESS cropRect.x ' + cropRect.x + ' cropRect.y ' + cropRect.y  + ' cropRect.height ' + cropRect.height + ' cropRect.width ' + cropRect.width);
-
-//	navGroup.parent.fullscreen = false;
-//	Titanium.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
-	navGroup.parent.show();
-	
-}
 
 actionSheet.addEventListener("click", function (event) {
 	Ti.API.log("clicked button in actionsheet " + event.index);	
@@ -117,6 +153,9 @@ actionSheet.addEventListener("click", function (event) {
 				navGroup.parent.show();
 			},
 		});
+	} else if (event.index == 2 && actionSheet.options.length == 4) {
+		spinner.show();
+		FB.downloadPic(FB.data.id, "large", profilePicCallback);
 	}
 })
 
@@ -124,23 +163,52 @@ p1.addEventListener("click", function() {
 	actionSheet.show();
 })
 
-function updateLoginStatus() {
-	alert('Logged In = ' + Titanium.Facebook.loggedIn);
+
+// FACEBOOK EVENT HANDLERS
+
+//Ti.Facebook.addEventListener('logout', updateLoginStatus);
+
+Ti.Facebook.addEventListener('login', function(e) {
+//	alert('Logged In = ' + Titanium.Facebook.loggedIn);
+    if (e.success) {
+    	
+    	spinner.show ();
+		FB.getFromServer(profilePicCallback);  
+    	
+    	actionSheet.options = optionsDialogFB;
+    	actionSheet.cancel = 3;
+    } else if (e.error) {
+        alert(e.error);
+    } else if (e.cancelled) {
+//        alert("Cancelled");
+    }
+});
+
+/*
+if (Titanium.Facebook.loggedIn) {
+	
+	spinner.show();
+	
+	FB.getFromServer(profilePicCallback);
+	
+	actionSheet.options = optionsDialogFB;
+	actionSheet.cancel = 3;
 }
-
-// capture
-Titanium.Facebook.addEventListener('login', updateLoginStatus);
-Titanium.Facebook.addEventListener('logout', updateLoginStatus);
-
-Titanium.Facebook.appid = "134793934930";
-Titanium.Facebook.permissions = ['publish_stream', 'read_stream'];
+*/
 
 win.add(Titanium.Facebook.createLoginButton({
 	style:Ti.Facebook.BUTTON_STYLE_WIDE,
 	bottom:30
 }));
 
+
+//spinner.hide();
 win.add(l1);
 win.add(p1);
+win.add(spinner);
+
+win.rightNavButton = nextButton;
+win.leftNavButton = leftButton;
+
 
 

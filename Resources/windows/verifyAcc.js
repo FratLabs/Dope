@@ -101,6 +101,11 @@ loginButton.addEventListener("click", function() {
 
 });
 
+tf3.addEventListener("return", function() {
+	loginButton.fireEvent("click");
+});
+
+
 win.add(tf3);
 win.add(l3);
 
@@ -109,4 +114,5 @@ win.add(loginButton);
 
 win.addEventListener("open", function () {
 	tf3.value = "";
+	tf3.focus();
 });
