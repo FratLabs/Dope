@@ -54,6 +54,7 @@ exports.getSubmenuRow = function(name, options, selectedIndex) {
 	var row = Titanium.UI.createTableViewRow({
 		title: name,
 		color: "#358",
+		className: "lb-menu",
 		hasChild: true
 	});
 	
@@ -82,7 +83,7 @@ exports.getSubmenuRow = function(name, options, selectedIndex) {
 
 
 	row.addEventListener("click", function () {
-		Ti.API.log("clicked row with submenu");
+//		Ti.API.log("clicked row with submenu");
 
 		var optWindow = Ti.UI.createWindow({
 			className: "optionsWindow",

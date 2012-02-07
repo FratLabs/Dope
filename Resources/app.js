@@ -68,7 +68,7 @@ loginWindow.add(loginNavigationGroup);
 if (Ti.App.Properties.hasProperty("login") == false || 
 	Ti.App.Properties.getString("login").length == 0) {
 	
-	loginWindow.open();
+	loginWindow.open({animated:false});
 }
 
 // GLOBAL CUSTOM EVENT LISTENERS

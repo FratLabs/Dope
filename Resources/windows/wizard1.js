@@ -23,7 +23,7 @@ function saveImageToProfile (event) {
 	blob = blob.imageAsResized (Defaults.MAX_PHOTO_WIDTH, Defaults.MAX_PHOTO_HEIGHT);
 
 	Ti.API.log("save picture to temp");
-	var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory ,'wiz1.jpg');
+	var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory ,'wiz1.jpg');
 	if (! f.exists())
 		f.createFile();
     f.write(blob);

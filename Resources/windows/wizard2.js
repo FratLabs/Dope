@@ -21,6 +21,29 @@ win.backgroundColor = '#FFF';
 
 // PRIVATE FUNCTIONS
 
+function _saveProfile() {
+	Ti.API.log("SAVING profile from FORM");
+	for (i in tableData) {
+		var rows = tableData[i].rows;
+		for (j in rows) {
+			var row = rows[j];
+			if (row.className == "lb-tf") {
+//					Ti.API.log("FIELDNAME: " + row.label.text);
+//					Ti.API.log("VALUE: " + row.textField.value);
+
+				Profile.setField(row.label.text, row.textField.value);		
+							
+			} else if (row.className == "lb-menu") {
+//					Ti.API.log("FIELDNAME: " + row.title);
+//					Ti.API.log("SELECTED INDEX: " + row.selectedIndex);
+
+				Profile.setField(row.title, row.selectedIndex);					
+			}
+		}
+	}
+	Profile.save();
+}
+
 
 
 // INTERFACE COMPONENTS
@@ -36,7 +59,6 @@ var wizard3Window = Titanium.UI.createWindow({
 
 nextButton.addEventListener("click", function () {
 	win.navGroup.open(wizard3Window, {animated:true});
-
 })
 
 
@@ -44,8 +66,10 @@ nextButton.addEventListener("click", function () {
 // TABLEVIEW DATA SOURCE
 
 var profileData = Profile.get();
-Ti.API.log("profileData: " + profileData);
-Ti.API.log(profileData);
+if (profileData.empty) {
+	Ti.API.log("empty profile in local storage, trying to get local FB data");
+	profileData = Profile.parseFacebookProfile();
+}
 
 var tableData = [];
 
@@ -90,9 +114,11 @@ tableData.push(section4);
 
 // BUILDING UI
 
-if (typeof win.editProfile == "undefined") {
+if (win.editProfile == true) {
+} else {
 	win.rightNavButton = nextButton;
 }	
+win.addEventListener("blur", _saveProfile);
 
 var table = Titanium.UI.createTableView({
 	data: tableData,

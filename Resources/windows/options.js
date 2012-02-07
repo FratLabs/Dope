@@ -26,11 +26,11 @@ for (var i = 0; i < parent.options.length; i++) {
 		}
 		table.data = tableData;
 		setTimeout(function () {
+//			win.leftNavButton.fireEvent("click");
 			navGroup.close(win, {animated:true});
 		}, 300)
 	})
 	tableData.push(el);
-		
 }
 
 var table = Titanium.UI.createTableView({

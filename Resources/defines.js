@@ -1,8 +1,11 @@
 exports.HTTP_SERVER_NAME = "http://jets-app.com";
 exports.LOGIN_SCRIPT_NAME = "/dope/login.php";
 exports.SIGNUP_SCRIPT_NAME = "/dope/signup.php";
+exports.PROFILE_SCRIPT_NAME = "/dope/profile.php";
 exports.MAX_PHOTO_WIDTH = 200;
 exports.MAX_PHOTO_HEIGHT = 200;
+
+exports.MAX_GOSSIP_LINES = 5;
 
 exports.NETWORK_TIMEOUT = 10;
 

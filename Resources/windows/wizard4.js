@@ -8,6 +8,3 @@ win.backButtonTitle = 'Step 3';
 var nextButton = Ti.UI.createButton({title:"Finish"});
 win.rightNavButton = nextButton;
 
-nextButton.addEventListener("click", function () {
-	win.navGroup.parent.close({animated:false});
-});

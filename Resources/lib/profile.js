@@ -1,16 +1,37 @@
 var Defaults = require("defines");
 var Funcs = require("lib/commonFuncs");
 
-Titanium.include('/lib/com.obscure.couchdb_client.js'); 
-couchdb_client.urlPrefix = "http://192.168.1.103:5984";
-
-var DB = couchdb_client;
-
 exports.data = {};
 
 exports.save = function() {
+//	Ti.API.log("SAVING Profile.data TO SERVER");
+//	Ti.API.log(exports.data);
 	Ti.App.Properties.setString("profileData", JSON.stringify(exports.data));		
 	// send it to server
+
+	setTimeout(function () { // starting second thread
+		var that = this;
+	 
+		var xhr = Ti.Network.createHTTPClient({
+		    onload: function(e) {
+				
+		    },
+		    onerror: function(e) {
+				alert(e.error);
+		    },
+		    timeout: Defaults.NETWORK_TIMEOUT * 1000
+		});
+		
+		var url = Defaults.HTTP_SERVER_NAME 
+			+ Defaults.PROFILE_SCRIPT_NAME 
+			+ "?login="+ Ti.App.Properties.getString("login") 
+			+ "&pass=" + Ti.App.Properties.getString("pass")
+			+ "&action=save";		 
+			
+		Ti.API.log("URL:" + url);
+		xhr.open("POST", url);
+		xhr.send({data: JSON.stringify(exports.data)});	
+	}, 0);	
 }
 
 exports.get = function() {
@@ -27,23 +48,38 @@ exports.get = function() {
 	return exports.data;	
 }
 exports.getFromServer = function(options) {
-	DB.info({
-    	success: function(data) {
-     	   Ti.API.log(data);
-	    }	
-	});
-	DB.allDbs({
-    	success: function(data) {
-     	   Ti.API.log(data);
-	    }	
-	});
-	setTimeout(function () {
-		Ti.API.log("fake profile loader is here");
-		if (options.success)
-			options.success();		
-		if (options.error)
-			options.error();		
-	}, 3000);	
+	
+		var xhr = Ti.Network.createHTTPClient({
+		    onload: function(e) {
+
+	    		var data = JSON.parse(this.responseText);
+	    		exports.data = JSON.parse(data.profile);
+	    		Ti.App.Properties.setString("profileData", data.profile);
+
+				Ti.API.log(data);
+
+				if (options.success) {
+					options.success(this, e);
+				}
+				
+		    },
+		    onerror: function(e) {
+				if (options.error) {
+					options.error(this, e);
+				}
+		    },
+		    timeout: Defaults.NETWORK_TIMEOUT * 1000
+		});
+		
+		var url = Defaults.HTTP_SERVER_NAME 
+			+ Defaults.PROFILE_SCRIPT_NAME 
+			+ "?login="+ Ti.App.Properties.getString("login") 
+			+ "&pass=" + Ti.App.Properties.getString("pass")
+			+ "&action=get";		 
+			
+		Ti.API.log("URL:" + url);
+		xhr.open("GET", url);
+		xhr.send();	
 }
 
 exports.getField = function (name) {
@@ -51,6 +87,10 @@ exports.getField = function (name) {
 		return exports.data[name]
 	else
 		return "";
+}
+
+exports.setField = function (name, value) {
+	exports.data[name] = value;
 }
 
 exports.parseFacebookProfile = function (fb) {

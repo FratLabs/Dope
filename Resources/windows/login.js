@@ -82,6 +82,7 @@ var tf1 = Ti.UI.createTextField({
 	height:35,
 	top:40,
 	width:260,
+	hintText: "Email",
 	keyboardType: Ti.UI.KEYBOARD_EMAIL,
 	returnKeyType: Ti.UI.RETURNKEY_NEXT,
 	autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -94,7 +95,8 @@ var tf2 = Ti.UI.createTextField({
 	top:100,
 	width:260,
 	passwordMask:true,
-	returnKeyType: Ti.UI.RETURNKEY_NEXT,
+	hintText: "Password",
+	returnKeyType: Ti.UI.RETURNKEY_GO,
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
 });
 
@@ -104,7 +106,8 @@ var tf3 = Ti.UI.createTextField({
 	top:160,
 	width:260,
 	passwordMask:true,
-	returnKeyType: Ti.UI.RETURNKEY_NEXT,
+	hintText: "Confirm password",
+	returnKeyType: Ti.UI.RETURNKEY_GO,
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
 });
 
@@ -211,6 +214,9 @@ tf2.addEventListener("return", function() {
 		loginButton.fireEvent("click");
 	}	
 });
+tf3.addEventListener("return", function() {
+	registerButton.fireEvent("click");
+})
 
 termsButton.addEventListener("click", function(e) {
 	navGroup.open(termsWindow, {animated:true});
@@ -307,6 +313,8 @@ firstTimeButton.addEventListener("click", function() {
 		tf3.animate(a2);
 		l3.animate(a2);
 		tf3.enabled = true;
+		tf2.returnKeyType = Ti.UI.RETURNKEY_NEXT;
+
 	
 		this.titleDefault = this.title;
 		this.title = "Back to Sign In";
@@ -318,6 +326,7 @@ firstTimeButton.addEventListener("click", function() {
 		tf3.animate(a1);
 		l3.animate(a1);
 		tf3.enabled = false;
+		tf2.returnKeyType = Ti.UI.RETURNKEY_GO;
 
 		this.title = this.titleDefault;
 	}

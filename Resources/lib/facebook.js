@@ -30,7 +30,7 @@ exports.downloadPic = function (data_id, type, success_callback) {
 			var blob = httpClient.responseData;
 			Ti.API.log("data length " + blob.length);
 			
-			var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory ,'wiz1.jpg');
+			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory ,'wiz1.jpg');
 			if (! f.exists())
 				f.createFile();
 	
