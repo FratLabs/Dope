@@ -11,10 +11,10 @@
     <id>com.strelets.dope</id>
     <name>Dope</name>
     <version>1.0</version>
-    <publisher>dark</publisher>
-    <url>http://</url>
+    <publisher>Frat Labs</publisher>
+    <url>http://www.FratLabs.com</url>
     <description> 111</description>
-    <copyright>alex.strelets</copyright>
+    <copyright>Frat Labs</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
