@@ -6,6 +6,8 @@ exports.MAX_PHOTO_WIDTH = 200;
 exports.MAX_PHOTO_HEIGHT = 200;
 
 exports.MAX_GOSSIP_LINES = 5;
+exports.PHOTOS_IN_LIST = 4;
+exports.PHOTOS_TABLE_PADDING = 3;
 
 exports.NETWORK_TIMEOUT = 10;
 

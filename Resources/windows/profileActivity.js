@@ -1,0 +1,19 @@
+
+(function () {
+	Dope.UI.createProfileActivityWindow = function() {
+		var win = Ti.UI.createWindow({
+			title: "Activity",
+			
+		})
+		
+		var tableData = [];
+		
+		
+		var table = Ti.UI.createTableView({
+			data: tableData,
+		});
+		win.add(table);
+
+		return win;
+	}
+})()

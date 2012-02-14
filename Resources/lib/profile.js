@@ -1,5 +1,4 @@
 var Defaults = require("defines");
-var Funcs = require("lib/commonFuncs");
 
 exports.data = {};
 
@@ -53,8 +52,12 @@ exports.getFromServer = function(options) {
 		    onload: function(e) {
 
 	    		var data = JSON.parse(this.responseText);
-	    		exports.data = JSON.parse(data.profile);
-	    		Ti.App.Properties.setString("profileData", data.profile);
+	    		if (! data.profile) {
+					
+	    		} else {
+		    		exports.data = JSON.parse(data.profile);
+		    		Ti.App.Properties.setString("profileData", data.profile);
+	    		}
 
 				Ti.API.log(data);
 
@@ -100,7 +103,7 @@ exports.parseFacebookProfile = function (fb) {
 			
 			var fbData = JSON.parse(Ti.App.Properties.getString("dataFromFacebook"));
 		} else {
-			var fbData = {};		
+			var fbData = {empty:true};		
 		}
 	} else {
 		var fbData = fb;

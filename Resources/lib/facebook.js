@@ -1,5 +1,4 @@
 var Defaults = require("defines");
-var Funcs = require("lib/commonFuncs");
 
 Ti.Facebook.appid = Defaults.FB_ID;
 Ti.Facebook.permissions = Defaults.FB_PERM;
@@ -35,7 +34,7 @@ exports.downloadPic = function (data_id, type, success_callback) {
 				f.createFile();
 	
 			if (resize)
-				blob = Funcs.universalResize(blob, Defaults.MAX_PHOTO_WIDTH, Defaults.MAX_PHOTO_HEIGHT);	
+				blob = Dope.Utils.imageUniversalResize(blob, Defaults.MAX_PHOTO_WIDTH, Defaults.MAX_PHOTO_HEIGHT);	
 					        
 	        f.write(blob);
 	        

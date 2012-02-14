@@ -1,118 +1,160 @@
-var Defaults = require("defines");
 
-var win = Ti.UI.currentWindow;
-var navGroup = win.navGroup;
+(function() {
+	Dope.UI.createVerifyAccountWindow = function (login, pass) {
 
-win.title = "Account verification";
-win.backgroundColor = '#999';
-
-
-var l3 = Ti.UI.createLabel({
-	top: 80,
-	width: 260,
-	height: 'auto',
-	color: '#666',
-	font: { fontSize:15, fontWeight:"bold" },
-	text: 'Verification code'
-});
-
-var tf3 = Ti.UI.createTextField({
-	color: '#369',
-	height: 35,
-	top: 100,
-	width: 260,
-	textAlign: "center",
-	font: {fontSize:20},
-	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
-	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
-});
-
-var spinner = Ti.UI.createActivityIndicator({
-	center: {y:240},
-	width:30,
-	height:30,
-	style: Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
-});
-
-var loginButton = Ti.UI.createButton({
-	top:270,
-	height:40,
-	width:200,
-	title:'Sign In'
-});	
-
-var wizardStep1Window = Ti.UI.createWindow({
-	url: '/windows/wizard1.js',
-	navGroup: win.navGroup
-});
-
-Ti.App.addEventListener("startProfileWizard", function (e) {
-	win.navGroup.open(wizardStep1Window, {animated:true});
-})
-
-loginButton.addEventListener("click", function() {
+		var win = Ti.UI.createWindow({
+			title: "Account verification"
+		});
+		win.loginValue = login;
+		win.passValue = pass;
 	
-	spinner.show();
-	
-	this.enabled = false;
-	var that = this;
- 
-	var xhr = Ti.Network.createHTTPClient({
-	    onload: function(e) {
-			var data = JSON.parse(this.responseText);
-			
-			// get error response from server
-			if (data.status != "ok") {
-			
-				alert(data.errorMessage);
-				tf3.focus();
-			
+		var verifyField = Ti.UI.createTextField({
+			color: '#000',
+			height: 44,
+			left:10,
+			right:10,
+			hintText: "Verification code",
+			font:{fontSize:16, fontWeight:"normal"},
+			returnKeyType: Titanium.UI.RETURNKEY_GO,
+			borderStyle: Ti.UI.INPUT_BORDERSTYLE_NONE
+		});
+		verifyField.addEventListener("return", function() {
+			loginButton.fireEvent("click");
+		});
+		verifyField.addEventListener("change", function () {
+			if (this.value.length > 0) {
+				loginButton.enabled = true;
 			} else {
-				
-				// save login info to application preferences
-				
-				// and close dialog
-				tf3.value = "";
-				Ti.App.fireEvent("startProfileWizard");
-			}	        
-	        spinner.hide();
-	        that.enabled = true;
-	        
-	    },
-	    onerror: function(e) {
-	        Ti.API.debug(e.error);
-	        alert("Couldn't connect to server");
-	        
-	        that.enabled = true;
-	        spinner.hide();
-	    },
-	    timeout: Defaults.NETWORK_TIMEOUT * 1000
-	});
+				loginButton.enabled = false;
+			}
+		});
+		var spinner = Ti.UI.createActivityIndicator({width:60});
+
+		var loginButton = Ti.UI.createButton({
+			title:'Sign In',
+			enabled: false,
+		});	
+
+// var wizardStep1Window = Ti.UI.createWindow({
+	// url: '/windows/wizard1.js',
+	// navGroup: win.navGroup
+// });
+
+// Ti.App.addEventListener("startProfileWizard", function (e) {
+	// win.navGroup.open(wizardStep1Window, {animated:true});
+// })
+
+		loginButton.addEventListener("click", function() {
+
+			this.enabled = false;
+			verifyField.enabled = false;
+			win.rightNavButton = spinner;
+			spinner.show();
+
+			var that = this;
+		 
+			var xhr = Ti.Network.createHTTPClient({
+			    onload: function(e) {
+					var data = JSON.parse(this.responseText);
+					
+					win.rightNavButton = loginButton;
+					verifyField.enabled = true;
+			        that.enabled = true;
+
+					// get error response from server
+					if (data.status != "ok") {
+					
+						alert(data.errorMessage);
+						verifyField.focus();
+					
+					} else {
+
+						// save login info to application preferences
+						Ti.App.Properties.setString("login", win.loginValue);
+						Ti.App.Properties.setString("pass", win.passValue);
+
+						Ti.include("windows/wizard1.js");
+
+						var wizardWindow = Dope.UI.createWizardWindow();
+						
+						Dope.openWindow(win, wizardWindow);
+					}	        
+			        
+			    },
+			    onerror: function(e) {
+			        Ti.API.debug(e.error);
+			        alert("Couldn't connect to server");
+			        
+			        that.enabled = true;
+					verifyField.enabled = true;
+					win.rightNavButton = loginButton;
+			    },
+			    timeout: Defaults.NETWORK_TIMEOUT * 1000
+			});
 	
-	var url = Defaults.HTTP_SERVER_NAME 
-		+ Defaults.LOGIN_SCRIPT_NAME 
-		+ "?verify="+ tf3.value 
-		+ "&login=" + Ti.App.Properties.getString("login")
-		+ "&pass=" + Ti.App.Properties.getString("pass");		 
+			var url = Defaults.HTTP_SERVER_NAME 
+				+ Defaults.LOGIN_SCRIPT_NAME 
+				+ "?verify="+ verifyField.value 
+				+ "&login=" + win.loginValue
+				+ "&pass=" + win.passValue;		 
+				
+			Ti.API.log("URL:" + url);
+			xhr.open("GET", url);
+			xhr.send();		
 		
-	Ti.API.log("URL:" + url);
-	xhr.open("GET", url);
-	xhr.send();		
+		});
+		var tableData = [];
+		
+		var verifyRow = Ti.UI.createTableViewRow();
+		verifyRow.add(verifyField);
+		
+		tableData.push(verifyRow);
+		
+		var table = Titanium.UI.createTableView({
+			data: tableData,
+			style: Ti.UI.iPhone.TableViewStyle.GROUPED
+		});
+		
+		var headerLabel = Ti.UI.createLabel({
+			top: 60,
+			left:20,
+			right:20,
+			height: 'auto',
+			color: Dope.UI.tableHintColor,
+			shadowColor: Dope.UI.tableHintShadowColor,
+			shadowOffset: {x:0,y:1},
+			font: { fontSize:16, fontWeight:"normal" },
+			text: 'You will receive confirmation mail with this code in a second. Bla-bla-bla, thanks for registering.'
+		});
 
-});
+		var headerView = Ti.UI.createView({
+			height:120
+		})
+		
+		var logo = Ti.UI.createImageView({
+			backgroundColor:"#999",
+			width:100,
+			top:10,
+			height:40,
+		})
+		headerView.add(headerLabel);
+		headerView.add(logo);
+		
+		headerView.addEventListener("touchstart", function () {
+			verifyField.blur();
+		});
+		
+		table.setHeaderView(headerView);
+		win.add(table);
+		win.rightNavButton = loginButton;
+		win.backButton
+		
 
-tf3.addEventListener("return", function() {
-	loginButton.fireEvent("click");
-});
-
-
-win.add(tf3);
-win.add(l3);
-
-win.add(spinner);
-win.add(loginButton);
-
-win.addEventListener("open", function () {
-	tf3.value = "";
-	tf3.focus();
-});
+		win.addEventListener("open", function () {
+			verifyField.value = "";
+			verifyField.focus();
+		});
+		
+		return win;
+	}
+})()
