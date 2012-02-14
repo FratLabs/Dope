@@ -6,18 +6,29 @@
 			backgroundColor:"#c5ccd4"
 		});
 		var toolbar = Ti.UI.createToolbar({
-			top:0,
+			top:-1,
 			height:44,
 		});
 		win.add(toolbar);
 		var bb1 = Titanium.UI.iOS.createTabbedBar({
 		    labels:['Map', 'List', 'Grid'],
-		    top:5,
+		    index:0,
+		    top:7,
 		    style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		    height:34,
-		    width:"90%"
+		    height:30,
+		    width:"70%"
 		});
 		win.add(bb1);
+		var mapview = Titanium.Map.createView({
+			top:43,
+		    mapType: Titanium.Map.STANDARD_TYPE,
+		    animate:true,
+		    regionFit:true,
+		    userLocation:true,
+		});
+		 
+		win.add(mapview);
+
 
 		// var tableData = [];
 		// var table = Titanium.UI.createTableView({
