@@ -48,41 +48,41 @@ exports.get = function() {
 }
 exports.getFromServer = function(options) {
 	
-		var xhr = Ti.Network.createHTTPClient({
-		    onload: function(e) {
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
 
-	    		var data = JSON.parse(this.responseText);
-	    		if (! data.profile) {
-					
-	    		} else {
-		    		exports.data = JSON.parse(data.profile);
-		    		Ti.App.Properties.setString("profileData", data.profile);
-	    		}
-
-				Ti.API.log(data);
-
-				if (options.success) {
-					options.success(this, e);
-				}
+    		var data = JSON.parse(this.responseText);
+    		if (! data.profile) {
 				
-		    },
-		    onerror: function(e) {
-				if (options.error) {
-					options.error(this, e);
-				}
-		    },
-		    timeout: Defaults.NETWORK_TIMEOUT * 1000
-		});
-		
-		var url = Defaults.HTTP_SERVER_NAME 
-			+ Defaults.PROFILE_SCRIPT_NAME 
-			+ "?login="+ Ti.App.Properties.getString("login") 
-			+ "&pass=" + Ti.App.Properties.getString("pass")
-			+ "&action=get";		 
+    		} else {
+	    		exports.data = JSON.parse(data.profile);
+	    		Ti.App.Properties.setString("profileData", data.profile);
+    		}
+
+			Ti.API.log(data);
+
+			if (options.success) {
+				options.success(this, e);
+			}
 			
-		Ti.API.log("URL:" + url);
-		xhr.open("GET", url);
-		xhr.send();	
+	    },
+	    onerror: function(e) {
+			if (options.error) {
+				options.error(this, e);
+			}
+	    },
+	    timeout: Defaults.NETWORK_TIMEOUT * 1000
+	});
+	
+	var url = Defaults.HTTP_SERVER_NAME 
+		+ Defaults.PROFILE_SCRIPT_NAME 
+		+ "?login="+ Ti.App.Properties.getString("login") 
+		+ "&pass=" + Ti.App.Properties.getString("pass")
+		+ "&action=get";		 
+		
+	Ti.API.log("URL:" + url);
+	xhr.open("GET", url);
+	xhr.send();	
 }
 
 exports.getField = function (name) {
@@ -94,6 +94,131 @@ exports.getField = function (name) {
 
 exports.setField = function (name, value) {
 	exports.data[name] = value;
+}
+
+exports.getPhotos = function(options) {
+	if (! options)
+		options = {};
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+
+    		var data = JSON.parse(this.responseText);
+    		if (! data.photos) {
+				
+    		} else {
+	    		exports.photos = data.photos;
+//	    		Ti.App.Properties.setString("profileData", data.profile);
+    		}
+
+//			Ti.API.log(data);
+
+			if (options.success) {
+				options.success(this, data.photos);
+			}
+			
+	    },
+	    onerror: function(e) {
+			if (options.error) {
+				options.error(this, e);
+			}
+	    },
+	    timeout: Defaults.NETWORK_TIMEOUT * 1000
+	});
+	
+	var url = Defaults.HTTP_SERVER_NAME 
+		+ Defaults.PROFILE_SCRIPT_NAME 
+		+ "?login="+ Ti.App.Properties.getString("login") 
+		+ "&pass=" + Ti.App.Properties.getString("pass")
+		+ "&action=getPhotos";		 
+		
+	Ti.API.log("URL:" + url);
+	xhr.open("GET", url);
+	xhr.send();		
+}
+
+exports.deletePhotoWithIndex = function (index, options) {
+	if (! options)
+		options = {};
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+
+    		var data = JSON.parse(this.responseText);
+    		if (! data.photos) {
+				
+    		} else {
+	    		exports.photos = data.photos;
+    		}
+
+//			Ti.API.log(data);
+
+			if (options.success) {
+				options.success(this, data.photos);
+			}
+			
+	    },
+	    onerror: function(e) {
+			if (options.error) {
+				options.error(this, e);
+			}
+	    },
+	    timeout: Defaults.NETWORK_TIMEOUT * 1000
+	});
+	
+	var url = Defaults.HTTP_SERVER_NAME 
+		+ Defaults.PROFILE_SCRIPT_NAME 
+		+ "?login="+ Ti.App.Properties.getString("login") 
+		+ "&pass=" + Ti.App.Properties.getString("pass")
+		+ "&action=delPhoto"
+		+ "&index="+index;		 
+		
+	Ti.API.log("URL:" + url);
+	xhr.open("GET", url);
+	xhr.send();	
+}
+
+exports.uploadPhoto = function (data, options) {
+	if (! options)
+		options = {};
+	Ti.API.log(options);
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+
+    		var data = JSON.parse(this.responseText);
+
+//			Ti.API.log(data);
+    		if (! data.photos) {
+				
+    		} else {
+	    		exports.photos = data.photos;
+    		}
+    		
+			if (options.success) {
+				options.success(this, data.photos);
+			}
+			
+	    },
+	    onerror: function(e) {
+			if (options.error) {
+				options.error(this, e);
+			}
+	    },
+	    onsendstream: function (e) {
+			if (options.progress) {
+				options.progress(this, e);
+			}
+	    },
+	    timeout: Defaults.NETWORK_TIMEOUT * 10000
+	});
+	
+	var url = Defaults.HTTP_SERVER_NAME 
+		+ Defaults.PROFILE_SCRIPT_NAME 
+		+ "?login="+ Ti.App.Properties.getString("login") 
+		+ "&pass=" + Ti.App.Properties.getString("pass")
+		+ "&action=savePhoto";
+		
+	Ti.API.log("URL:" + url);
+	xhr.open("POST", url);
+	xhr.send({"photo":data});		
 }
 
 exports.parseFacebookProfile = function (fb) {

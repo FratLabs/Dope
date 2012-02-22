@@ -1,6 +1,12 @@
 (function () {
 	Dope.UI.createProfilePhotosWindow = function() {
 
+		var pWidth = Ti.Platform.displayCaps.platformWidth;
+		var thumbSize = Math.round( (pWidth - (Defaults.PHOTOS_TABLE_PADDING * (Defaults.PHOTOS_IN_LIST+1))) / Defaults.PHOTOS_IN_LIST);
+		var initialPos = {x: Defaults.PHOTOS_TABLE_PADDING, y: Defaults.PHOTOS_TABLE_PADDING + 44};
+		var pos = initialPos;
+		var photoArray = [];
+		
 		var win = Ti.UI.createWindow({
 			title:"Photos",
 			translucent: true,
@@ -10,12 +16,13 @@
 		})
 		win.longClick = false;
 		
-		function createThumb(i, pos) {
-			var thumb = Ti.UI.createLabel({
-				text: "[" + i + "]",
+		function createThumb(photos, i, pos) {
+			var thumb = Ti.UI.createImageView({
+//				text: "[" + i + "]",
 				index: i,
 				color:"#FFF",
-				backgroundColor:"#" + Math.round(Math.random()*9) + "" + Math.round(Math.random()*9) + "" + Math.round(Math.random()*9) ,
+				backgroundColor:"#000",
+//				backgroundColor:"#" + Math.round(Math.random()*9) + "" + Math.round(Math.random()*9) + "" + Math.round(Math.random()*9) ,
 				width: thumbSize,
 				height: thumbSize,
 				top: pos.y,
@@ -24,6 +31,11 @@
 				borderColor: "#AAA",
 				borderWidth: 1
 			})
+			var imgSrc = Defaults.HTTP_SERVER_NAME + "/" + photos.thumbFolder + "/" + photos.list[i].thumbName;
+			
+//			Ti.API.log("imgSrc:" + imgSrc);
+			thumb.image = imgSrc;
+			
 			thumb.addEventListener("touchstart", function() {
 				this.opacity = 0.5;
 			})
@@ -48,6 +60,44 @@
 			})	
 			return thumb;
 		}
+		
+		function addNewThumb(photos) {
+			
+
+			var list = photos.list;
+			var newCount = list.length;
+			var curCount = list.length-1;
+			
+			var pos = {x:Defaults.PHOTOS_TABLE_PADDING,y:Defaults.PHOTOS_TABLE_PADDING};
+			pos.y = (Math.floor(curCount / Defaults.PHOTOS_IN_LIST)) * (thumbSize+Defaults.PHOTOS_TABLE_PADDING) + Defaults.PHOTOS_TABLE_PADDING + 44;
+			pos.x = (curCount - Math.floor(curCount / Defaults.PHOTOS_IN_LIST)*Defaults.PHOTOS_IN_LIST) * (thumbSize+Defaults.PHOTOS_TABLE_PADDING) + Defaults.PHOTOS_TABLE_PADDING;
+			Ti.API.log(pos);
+			var thumb = createThumb(photos, list.length-1, pos);
+
+			photoArray.push(thumb);
+			scrollView.add(thumb);
+
+			footerLabel.top = photoArray[photoArray.length-1].top + Defaults.PHOTOS_TABLE_PADDING + thumbSize;
+			scrollView.contentHeight = footerLabel.top + 50;
+		}				
+		
+		function uploadPhoto(data) {
+			Profile.uploadPhoto(data, {
+				success: function (xhr, photos) {
+					Ti.API.log("UPLOADED");
+					ind.hide();
+					addNewThumb(photos);
+				},
+				error: function (xhr, e) {
+					ind.hide();
+					alert(e.error);
+				},
+				progress: function (xhr, e) {
+					ind.value = e.progress;
+					Ti.API.log("UPLOAD PROGRESS: "+ e.progress);
+				}
+			});
+		}
 
 		var cameraButton = Titanium.UI.createButton({
 			title:"Add",
@@ -70,48 +120,52 @@
 			if (event.index == 0) {
 				Ti.API.log("photo to delete: " + win.deletePhoto.index);
 				
-				win.deletePhoto.hide();
-				
-				var newCoords = {};
+				Profile.deletePhotoWithIndex(win.deletePhoto.index, {
+					success: function() {
+						
+						win.deletePhoto.hide();
+						
+						var newCoords = {};
 
-//				Ti.API.log(photoArray);
-
-				Ti.API.log("collecting old coords");
-				for (var i = win.deletePhoto.index+1; i < photoArray.length; i++) {
-					var pp = photoArray[i-1];
-					newCoords[i] = {top: pp.top,left: pp.left} 
-				}
-				Ti.API.log(newCoords);
+//						Ti.API.log("collecting old coords");
+						for (var i = win.deletePhoto.index+1; i < photoArray.length; i++) {
+							var pp = photoArray[i-1];
+							newCoords[i] = {top: pp.top,left: pp.left} 
+						}
+		
+						for (var i = win.deletePhoto.index+1; i < photoArray.length; i++) {
+							photoArray[i].index = i-1;
+							
+							var p = photoArray[i];
+//							Ti.API.log(p.index);
+							p.animate({
+								top:  newCoords[i].top,
+								left: newCoords[i].left,
+								duration: 200
+							});
 				
-//				Ti.API.log("old length:" + photoArray.length);
+						}
+						
+						setTimeout(function() {
+							for (var i = win.deletePhoto.index+1; i < photoArray.length; i++) {
+								var p = photoArray[i];
+								p.top = newCoords[i].top;
+								p.left = newCoords[i].left;
+							}
+							photoArray.splice(win.deletePhoto.index, 1);
+							if (photoArray.length) {
+								footerLabel.top = photoArray[photoArray.length-1].top + Defaults.PHOTOS_TABLE_PADDING + thumbSize;
+							} else {
+								footerLabel.hide();
+							}
+						}, 300);
 
-				for (var i = win.deletePhoto.index+1; i < photoArray.length; i++) {
-					photoArray[i].index = i-1;
-					photoArray[i].text = "["+(i-1)+"]";
-					
-					var p = photoArray[i];
-					Ti.API.log(p.index);
-					p.animate({
-						top:  newCoords[i].top,
-						left: newCoords[i].left,
-						duration: 200
-					});
-//					p.top = newCoords[i].top;
-//					p.left = newCoords[i].left;
-//					photoArray[i-1] = p;					
-				}
-				
-				setTimeout(function() {
-					for (var i = win.deletePhoto.index+1; i < photoArray.length; i++) {
-						var p = photoArray[i];
-						p.top = newCoords[i].top;
-						p.left = newCoords[i].left;
+					},
+					error: function (xhr, e) {
+						Ti.API.log("photos delete: error");
+						alert(e.error);	
 					}
-					photoArray.splice(win.deletePhoto.index, 1);
-
-					footerLabel.top = photoArray[photoArray.length-1].top + Defaults.PHOTOS_TABLE_PADDING + thumbSize;
-
-				}, 300);
+				});
 
 //				win.deletePhoto = null;
 			}
@@ -122,7 +176,7 @@
 //			Titanium.UI.createAlertDialog({title:'Button', message:'CAMERA'}).show();
 			actionSheet.show();
 		});
-		
+
 		actionSheet.addEventListener("click", function (event) {
 			Ti.API.log("clicked button in actionsheet " + event.index);	
 			if (event.index == 0) {
@@ -133,8 +187,12 @@
 //					allowEditing: true,
 					mediaTypes: [Ti.Media.MEDIA_TYPE_PHOTO],
 		
-					success: function () {
+					success: function (event) {
 						Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
+						
+						ind.show();
+						
+						uploadPhoto(event.media);
 					}, 
 					cancel: function() {
 						Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
@@ -161,9 +219,10 @@
 //					allowEditing: true,
 					mediaTypes: [Ti.Media.MEDIA_TYPE_PHOTO],
 					
-					success: function () {
+					success: function (event) {
 						Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
-						
+						ind.show();
+						uploadPhoto(event.media);
 					}, 
 					cancel: function() {
 						Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
@@ -186,49 +245,76 @@
     		showVerticalScrollIndicator:false,
     	});
 
-		var pWidth = Ti.Platform.displayCaps.platformWidth;
-		var thumbSize = Math.round( (pWidth - (Defaults.PHOTOS_TABLE_PADDING * (Defaults.PHOTOS_IN_LIST+1))) / Defaults.PHOTOS_IN_LIST);
-		var pos = {x: Defaults.PHOTOS_TABLE_PADDING, y: Defaults.PHOTOS_TABLE_PADDING + 44};
+
+		var footerLabel = Ti.UI.createLabel({
+			height:40,
+			width:200,
+			textAlign:"center",
+			color:"#000",
+			font: {fontSize:14, fontWeight:"normal"},
+			top: pos.y + Defaults.PHOTOS_TABLE_PADDING + thumbSize,
+			text: "Long tap to delete"
+		}) 
+		scrollView.add(footerLabel);
+		footerLabel.hide();
+
+
+		Profile.getPhotos({
+			success: function (xhr, photos) {
+				Ti.API.log(photos);
+
+				var count = photos.list.length;
+				var line = 0;
 		
-		var count = 27;
-		var line = 0;
-		var photoArray = [];
+				for (var i = 0; i < count; i++) {
+					
+					if (line == Defaults.PHOTOS_IN_LIST) {
+						pos.y += thumbSize + Defaults.PHOTOS_TABLE_PADDING;
+						pos.x = Defaults.PHOTOS_TABLE_PADDING;
+						line = 0;
+					}
+		
+					var thumb = createThumb(photos, i, pos);
+					line ++;
+					pos.x += thumbSize + Defaults.PHOTOS_TABLE_PADDING;		
+		
+					photoArray.push(thumb);
+		
+					scrollView.add(thumb);
+				}
+				if (count > 0) {
+					footerLabel.top = photoArray[photoArray.length-1].top + Defaults.PHOTOS_TABLE_PADDING + thumbSize;
+					scrollView.contentHeight = footerLabel.top + 50;
 
-		for (var i = 0; i < count; i++) {
-			
-			if (line == Defaults.PHOTOS_IN_LIST) {
-				pos.y += thumbSize + Defaults.PHOTOS_TABLE_PADDING;
-				pos.x = Defaults.PHOTOS_TABLE_PADDING;
-				line = 0;
+					footerLabel.show();
+				} else {
+					
+				}
+		
+			},
+			error: function (xhr, e) {
+				Ti.API.log("profile photos: error");
+				alert(e.error);	
 			}
-
-			var thumb = createThumb(i, pos);
-			line ++;
-			pos.x += thumbSize + Defaults.PHOTOS_TABLE_PADDING;		
-
-			photoArray.push(thumb);
-
-			scrollView.add(thumb);
-		}
-
-		if (count > 0) {
-			var footerLabel = Ti.UI.createLabel({
-				height:40,
-				width:200,
-				textAlign:"center",
-				color:"#000",
-				font: {fontSize:14, fontWeight:"normal"},
-				top: pos.y + Defaults.PHOTOS_TABLE_PADDING + thumbSize,
-				text: "Long tap to delete"
-			}) 
-			scrollView.add(footerLabel);
-		} else {
-			
-		}
+		
+		})
 		
 		win.add(scrollView);
 		scrollView.contentHeight = pos.y + Defaults.PHOTOS_TABLE_PADDING + thumbSize + 50;
 
+		var ind = Titanium.UI.createProgressBar({
+		    width:200,
+		    height:50,
+		    bottom:20,
+		    min:0,
+		    max:1,
+		    value:0,
+		    style:Titanium.UI.iPhone.ProgressBarStyle.PLAIN,
+		    message:'Uploading image',
+		    font:{fontSize:14, fontWeight:'normal'},
+		    color:'#000'
+		});
+		win.add(ind);
 
 		return win;
 	}	
