@@ -12,6 +12,7 @@ Ti.include(
 	"windows/main.js",
 	"windows/login.js",
 	"windows/profile.js",
+	"windows/spotted.js",
 	"windows/partyline.js",
 	"windows/scopeout.js",
 	"windows/chat.js"
@@ -25,8 +26,9 @@ Dope.UI.createMainWindow().open();
 
 if (Ti.App.Properties.hasProperty("login") == false || 
 	Ti.App.Properties.getString("login").length == 0) {
-	
 	Dope.UI.createLoginWindow().open({animated:false});
+} else {
+	Profile.getFromServer();
 }
 
 if (! Ti.Network.online) {

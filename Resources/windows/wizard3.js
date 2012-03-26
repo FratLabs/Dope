@@ -148,8 +148,14 @@
 //		win.addEventListener("close", _saveProfileClassess);
 		
 		finishButton.addEventListener("click", function () {
-			
-			Dope.closeModalWindow(win);
+			Profile.getFromServer({
+				success: function() {
+					Dope.closeModalWindow(win);
+				},
+				error: function () {
+					Dope.closeModalWindow(win);
+				}
+			})
 		})
 		
 		return win;

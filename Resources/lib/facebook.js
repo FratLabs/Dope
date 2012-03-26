@@ -27,7 +27,7 @@ exports.downloadPic = function (data_id, type, success_callback) {
 	    onload: function(e) {
 			Ti.API.log("picture downloaded");
 			var blob = httpClient.responseData;
-			Ti.API.log("data length " + blob.length);
+//			Ti.API.log("data length " + blob.length);
 			
 			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory ,'wiz1.jpg');
 			if (! f.exists())
@@ -37,6 +37,7 @@ exports.downloadPic = function (data_id, type, success_callback) {
 				blob = Dope.Utils.imageUniversalResize(blob, Defaults.MAX_PHOTO_WIDTH, Defaults.MAX_PHOTO_HEIGHT);	
 					        
 	        f.write(blob);
+	        Profile.uploadAvatar(blob);
 	        
 	        if (typeof success_callback != "undefined") 
 	        	success_callback(blob);
@@ -57,6 +58,7 @@ exports.getFromLocal = function () {
 }
 
 exports.getFromServer = function(callback) {
+	Ti.API.log("requesting profile data from facebook");
  	Titanium.Facebook.requestWithGraphPath('me', {}, 'GET', function(e) {
 	    if (e.success) {
 	        Ti.API.log("storing the data for future");

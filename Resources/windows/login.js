@@ -165,7 +165,6 @@
 		
 		//	Ti.API.log("CHECKLOGINSERVER\ndata status1: " + data.status + " verify1: " + data.verifyNeeded);
 		
-			win.rightNavButton = button;
 
 			// get error response from server
 			if (data.status != "ok") {
@@ -173,6 +172,8 @@
 				alert(data.errorMessage);
 				win.passField.value = "";
 				win.passConfirmField.value = "";
+	
+				win.rightNavButton = button;
 	
 			} else {
 				
@@ -186,6 +187,8 @@
 					
 					var verifyWindow = Dope.UI.createVerifyAccountWindow(win.loginField.value, Ti.Utils.md5HexDigest(win.passField.value));
 
+					win.rightNavButton = button;
+		
 					Dope.openWindow(win, verifyWindow);
 										
 	//				var verifyWindow = Ti.UI.createWindow({
@@ -199,7 +202,21 @@
 					Ti.App.Properties.setString("login", win.loginField.value);
 					Ti.App.Properties.setString("pass", Ti.Utils.md5HexDigest(win.passField.value));
 
-					Dope.closeModalWindow(win);
+					Ti.API.log("loading profile data from server");
+					
+					Profile.getFromServer({
+						success: function (xhr) {
+							Ti.API.log("profile: success");
+							win.rightNavButton = button;
+							Dope.closeModalWindow(win);
+						}, 
+						error: function (xhr, e) {
+							Ti.API.log("profile: error");
+							win.rightNavButton = button;
+							alert(e.error);		
+							Dope.closeModalWindow(win);
+						}			
+					});
 				}
 			}
 		

@@ -1,4 +1,5 @@
 exports.HTTP_SERVER_NAME = "http://jets-app.com";
+exports.PROFILE_FOLDER = "/dope/userdir";
 exports.LOGIN_SCRIPT_NAME = "/dope/login.php";
 exports.SIGNUP_SCRIPT_NAME = "/dope/signup.php";
 exports.PROFILE_SCRIPT_NAME = "/dope/profile.php";

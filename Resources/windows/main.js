@@ -8,18 +8,26 @@
 		// create base UI tab and root window
 		
 		var winParty = Dope.UI.createPartylineWindow();
+		var winSpotted = Dope.UI.createSpottedWindow();
 		
 		var winScope = Dope.UI.createScopeoutWindow();
 		var winChat = Dope.UI.createChatWindow();
 		
-		//var winProfile = Ti.UI.createWindow({
-		//	url: '/windows/profile.js'
-		//});
+		
+		
+		
+		
+		var winProfile = Dope.UI.createProfileWindow();
 		
 		var tabParty = Ti.UI.createTab({
 			icon : 'KS_nav_ui.png',
-			title : 'Partyline',
+			title : 'Stream',
 			window : winParty
+		});
+		var tabSpotted = Ti.UI.createTab({
+			icon : 'KS_nav_ui.png',
+			title : 'Spotted',
+			window : winSpotted
 		});
 		
 		var tabScope = Ti.UI.createTab({
@@ -32,19 +40,20 @@
 			title : 'Chat',
 			window : winChat
 		});
-		// var tabProfile = Ti.UI.createTab({
-			// icon : 'KS_nav_ui.png',
-			// title : 'Profile',
-			// window : winProfile
-		// });
+		var tabProfile = Ti.UI.createTab({
+			icon : 'KS_nav_ui.png',
+			title : 'Profile',
+			window : winProfile
+		});
 		
 		//
 		//  add tabs
 		//
 		tabGroup.addTab(tabParty);
+		tabGroup.addTab(tabSpotted);
 		tabGroup.addTab(tabScope);
 		tabGroup.addTab(tabChat);
-		// tabGroup.addTab(tabProfile);
+		tabGroup.addTab(tabProfile);
 		
 		// open tab group
 

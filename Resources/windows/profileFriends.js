@@ -14,7 +14,7 @@
 		
 		var tableData = [];
 		
-		var count = 15;
+		var count = 0;
 		for (var i = 0; i < count; i ++) {
 			var row = Ti.UI.createTableViewRow({
 				title:"[username]",

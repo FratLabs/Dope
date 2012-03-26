@@ -84,6 +84,7 @@
 			if (! f.exists())
 				f.createFile();
 		    f.write(blob);
+		    Profile.uploadAvatar(blob);
 			        	
 		//	navGroup.parent.fullscreen = false;
 			Titanium.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.DEFAULT;
@@ -94,6 +95,7 @@
 // 		
 		function profilePicCallback(blob) {
 			p1.image = blob;
+
 			nextButton.enabled = true;
 			
 			Profile.parseFacebookProfile(FB.data)

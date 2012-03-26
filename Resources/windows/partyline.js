@@ -2,16 +2,31 @@
 	Dope.UI.createPartylineWindow = function () {
 
 		var win = Ti.UI.createWindow({
-			title: "Partyline",
+			title: "Stream",
 			backgroundColor: "#FFF"		
 		});
 		
-		//Ti.API.log("partyline Tab Loaded");
-		var profileButton = Ti.UI.createButton({title:'Profile'});
-		win.rightNavButton = profileButton;
+		var toolbar = Ti.UI.createToolbar({
+			top:-1,
+			height:44,
+		});
+		win.add(toolbar);
+		var bb1 = Titanium.UI.iOS.createTabbedBar({
+		    labels:["What's Hot", "Friend's Activity"],
+		    index:0,
+		    top:7,
+		    style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
+		    height:30,
+		    width:"70%"
+		});
+		win.add(bb1);
 		
-		var spottedButton = Ti.UI.createButton({title:"Spotted"});
-		win.leftNavButton = spottedButton;
+		//Ti.API.log("partyline Tab Loaded");
+//		var profileButton = Ti.UI.createButton({title:'Profile'});
+//		win.rightNavButton = profileButton;
+		
+//		var spottedButton = Ti.UI.createButton({title:"Spotted"});
+//		win.leftNavButton = spottedButton;
 
 		// var profileWindow = Ti.UI.createWindow({
 			// navBarHidden: true,
@@ -31,7 +46,7 @@
 		// profileGeneralWindow.navGroup = profileNavigationGroup;
 		// profileWindow.add(profileNavigationGroup);
 
-		var profileSpinner = Ti.UI.createActivityIndicator({width:60});
+//		var profileSpinner = Ti.UI.createActivityIndicator({width:60});
 		
 		var tableData = [];
 		
@@ -89,42 +104,43 @@
 		tableData.push(section2);
 		
 		var table = Titanium.UI.createTableView({
+			top:44,
 			data: tableData,
 			style: Ti.UI.iPhone.TableViewStyle.GROUPED
 		});
 		
-		spottedButton.addEventListener("click", function (e) {
-			Ti.include("windows/spotted.js");
-			var spottedWindow = Dope.UI.createSpottedWindow();
-			spottedWindow.open();
-		});
+		// spottedButton.addEventListener("click", function (e) {
+			// Ti.include("windows/spotted.js");
+			// var spottedWindow = Dope.UI.createSpottedWindow();
+			// spottedWindow.open();
+		// });
 			
-		profileButton.addEventListener("click", function (e) {
-			var profileData = Profile.get();
-			if (profileData.empty) {
-				
-				win.rightNavButton = profileSpinner;
-				profileSpinner.show();
-				
-				Profile.getFromServer({
-					success: function (xhr) {
-						win.rightNavButton = profileButton;		
-						Ti.API.log("profile: success");
-						var profileWindow = Dope.UI.createProfileWindow();
-						profileWindow.open();
-					}, 
-					error: function (xhr, e) {
-						Ti.API.log("profile: error");
-						win.rightNavButton = profileButton;
-						alert(e.error);		
-					}			
-				});
-			} else {
-				var profileWindow = Dope.UI.createProfileWindow();
-				profileWindow.open();
-			//	profileWindow.open();
-			}
-		})
+		// profileButton.addEventListener("click", function (e) {
+			// var profileData = Profile.get();
+			// if (profileData.empty) {
+// 				
+				// win.rightNavButton = profileSpinner;
+				// profileSpinner.show();
+// 				
+				// Profile.getFromServer({
+					// success: function (xhr) {
+						// win.rightNavButton = profileButton;		
+						// Ti.API.log("profile: success");
+						// var profileWindow = Dope.UI.createProfileWindow();
+						// profileWindow.open();
+					// }, 
+					// error: function (xhr, e) {
+						// Ti.API.log("profile: error");
+						// win.rightNavButton = profileButton;
+						// alert(e.error);		
+					// }			
+				// });
+			// } else {
+				// var profileWindow = Dope.UI.createProfileWindow();
+				// profileWindow.open();
+			// //	profileWindow.open();
+			// }
+		// })
 		
 		//BUILDING UI
 		win.add(table);
@@ -134,24 +150,24 @@
 		
 		var partylineWindow = Dope.UI.createNavigationGroupStack (win);
 			
-		var profileBadge = Ti.UI.createLabel({
-			top:2,
-			right:2,
-			width:18,
-			height:18,
-			backgroundColor:"#900",
-			borderColor:"#FFF",
-			borderWidth:2,
-			borderRadius:9,
-			textAlign:"center",
-			text:"1",
-			font:{fontSize:11, fontWeight:"bold"},
-			color:"#FFF",
-			
-		})
+		// var profileBadge = Ti.UI.createLabel({
+			// top:2,
+			// right:2,
+			// width:18,
+			// height:18,
+			// backgroundColor:"#900",
+			// borderColor:"#FFF",
+			// borderWidth:2,
+			// borderRadius:9,
+			// textAlign:"center",
+			// text:"1",
+			// font:{fontSize:11, fontWeight:"bold"},
+			// color:"#FFF",
+// 			
+		// })
 //		profileBadge.hide();
-		partylineWindow.profileBadge = profileBadge;
-		partylineWindow.add(profileBadge);
+		// partylineWindow.profileBadge = profileBadge;
+		// partylineWindow.add(profileBadge);
 
 			
 		Dope.UI.partylineWindow = partylineWindow;
